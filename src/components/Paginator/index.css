@@ -1,0 +1,14 @@
+.paginator button {
+    border: none !important;
+}
+
+.paginator .Mui-selected {
+    background-color: #0e99fe !important;
+    border: 1px solid #0e99fe !important;
+    color: #fff !important;
+}
+
+.paginator .MuiPaginationItem-previousNext {
+    background-color: transparent !important;
+    border: none !important;
+}
