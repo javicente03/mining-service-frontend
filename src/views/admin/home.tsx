@@ -4,7 +4,7 @@ import otsej1 from '../../assets/img/otsej1.jpg';
 import otsej2 from '../../assets/img/otsej2.jpg';
 import otsej3 from '../../assets/img/otsej3.jpg';
 
-export const Dashboard = () => {
+export const HomeAdmin = () => {
     console.log('otsej1', otsej1);
     return (
         <Fragment>

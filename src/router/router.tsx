@@ -1,7 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
+import LayoutAdmin from "../layout/layoutAdmin";
 import LayoutUser from "../layout/layoutUser";
 import NoRequireAuth from "../utils/noRequireAuth";
+import RequireAdmin from "../utils/requireAdmin";
 import RequireAuth from "../utils/requireAuth";
+import { HomeAdmin } from "../views/admin/home";
+import { SolicitudDetailAdmin } from "../views/admin/Solicitudes/SolicitudDetail";
+import { SolicitudesListAdmin } from "../views/admin/Solicitudes/SolicitudesList";
 import { ForgotPassword } from "../views/free/ForgotPassword";
 import { Login } from "../views/free/login";
 import { ResetPassword } from "../views/free/ResetPassword";
@@ -48,6 +53,25 @@ export const router = createBrowserRouter([
             {
                 path: "/requests/create",
                 element: <SolicitudCreate />,
+            }
+        ]
+    },
+    {
+        path: "/",
+        element: <RequireAdmin><LayoutAdmin /></RequireAdmin>,
+        errorElement: <div>404</div>,
+        children: [
+            {
+                path: "/admin",
+                element: <HomeAdmin />,
+            },
+            {
+                path: "/admin/requests",
+                element: <SolicitudesListAdmin />
+            },
+            {
+                path: "/admin/requests/:id",
+                element: <SolicitudDetailAdmin />
             }
         ]
     }

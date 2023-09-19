@@ -73,8 +73,7 @@ export const SolicitudCreate = () => {
 
         if (createRequest.isError) {
             // @ts-ignore
-            // setViewAlert({ ...viewAlert, open: true, message: createRequest.error.response.data.error, color: 'error' });
-            console.log(createRequest.error.response.data.error)
+            setViewAlert({ ...viewAlert, open: true, message: createRequest.error.response.data.error, color: 'error' });
         }
     }, [createRequest.isSuccess, createRequest.isError])
 
@@ -110,7 +109,7 @@ export const SolicitudCreate = () => {
                     <Grid container justifyContent={'center'}>
                         <Grid item xs={12} md={3} mb={5}>
                             <Typography className="modal-principal-title">
-                                Solicitud Enviada
+                                Solicitud Enviada N°#{createRequest.data?.data?.solicitud?.id}
                             </Typography>
                             <Divider
                                 sx={{
@@ -125,40 +124,40 @@ export const SolicitudCreate = () => {
                         <Grid item xs={12} sm={4} md={3}>
                             <img src={icon_worker} alt="worker" width={'100%'}/>
                         </Grid>
-                        <Grid item xs={12} sm={8} md={6}>
+                        <Grid item xs={12} sm={8} md={6} sx={{
+                            overflow: 'scroll',
+                            scrollbarWidth: 'thin',
+                            maxHeight: '300px',
+                            overflowX: 'hidden',
+                            wordBreak: 'break-word',
+                        }}>
                             <Typography sx={{
-                                color: 'white', fontSize: '18px', marginBottom: '10px'
+                                color: 'white', fontSize: '16px', marginBottom: '10px'
                             }}>
-                                OT Gato M01 #0312
+                                Detalles
                             </Typography>
                             <p style={{
-                                color: 'white', fontSize: '14px'
+                                color: 'white', fontSize: '12px', marginBottom: '10px'
                             }}>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores pariatur consectetur accusantium sit dicta. Consectetur quis impedit voluptates distinctio ratione similique, possimus, expedita, reiciendis cupiditate libero minima saepe vitae optio.
+                                {createRequest.data?.data?.solicitud?.description}
                             </p>
 
-                            <ul style={{
-                                color: 'white', fontSize: '12px', marginTop: '10px', listStyle: 'none'
-                            }}>
-                                <li>
-                                    - Lorem ipsum dolor sit amet consectetur.
-                                </li>
-                                <li>
-                                    - Lorem ipsum dolor sit amet consectetur.
-                                </li>
-                                <li>
-                                    - Lorem ipsum dolor sit amet consectetur.
-                                </li>
-                                <li>
-                                    - Lorem ipsum dolor sit amet consectetur.
-                                </li>
-                                <li>
-                                    - Lorem ipsum dolor sit amet consectetur.
-                                </li>
-                                <li>
-                                    - Lorem ipsum dolor sit amet consectetur.
-                                </li>
-                            </ul>
+                            {
+                                createRequest.data?.data?.solicitud?.tipos_trabajos_solicitud?.map((item: any, index: number) => (
+                                    <Fragment key={index}>
+                                        <Typography sx={{
+                                            color: 'white', fontSize: '14px',
+                                        }}>
+                                            {item.tipoTrabajo?.name}
+                                        </Typography>
+                                        <p style={{
+                                            color: 'white', fontSize: '11px', marginBottom: '10px'
+                                        }}>
+                                            {item.description}
+                                        </p>
+                                    </Fragment>
+                                ))
+                            }
                         </Grid>
 
                         <Grid item xs={12}></Grid>

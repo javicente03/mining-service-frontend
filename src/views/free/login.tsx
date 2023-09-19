@@ -29,7 +29,11 @@ export const Login = () => {
     useEffect(() => {
         if (login.isSuccess) {
             AuthLogin(login.data.data)
-            navigateTo('/')
+            if (login.data.data.role === 'admin') {
+                navigateTo('/admin')
+            } else {
+                navigateTo('/')
+            }
         }
 
         if (login.isError) {

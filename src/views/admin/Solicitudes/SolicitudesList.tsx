@@ -1,36 +1,35 @@
 import { Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material"
 import { useQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
-import es from "date-fns/locale/es"
+import { es } from "date-fns/locale"
 import { Fragment, useState } from "react"
 import { Link } from "react-router-dom"
-import Paginator from "../../components/Paginator/Paginator"
-// import format from "date-fns/format";
-import { GetMyRequests } from "../../helpers/requests"
+import Paginator from "../../../components/Paginator/Paginator"
+import { GetRequestsAdmin } from "../../../helpers/admin/requests"
 
-export const SolicitudesList = () => {
+export const SolicitudesListAdmin = () => {
 
-    const [ filters, setFilters ] = useState({
+    const [filters, setFilters] = useState({
         skip: 0,
-        limit: 10
+        limit: 10,
     })
-    const requests = useQuery(['GetMyRequests', filters], () => GetMyRequests(filters));
+    const requests = useQuery(['GetRequestsAdmin', filters], () => GetRequestsAdmin(filters))
 
     const formatStatus = (status: string) => {
         let ret: string | JSX.Element = '';
         switch (status) {
             case 'pending':
-                ret = <Typography className="status-blue">
+                ret = <Typography className="status-t2-yellow">
                     Pendiente
                 </Typography>
                 break;
             case 'approved':
-                ret = <Typography className="status-green">
+                ret = <Typography className="status-t2-green">
                     Aprobada
                 </Typography>
                 break;
             case 'rejected':
-                ret = <Typography className="status-red">
+                ret = <Typography className="status-t2-red">
                     Rechazada
                 </Typography>
                 break;
@@ -53,13 +52,10 @@ export const SolicitudesList = () => {
                         textTransform: 'capitalize',
                         ":disabled": { backgroundColor: '#272936', color: '#fff' },
                     }} disabled={true}>
-                        Solicitudes
+                        Solicitudes de Clientes
                     </Button>
                 </Grid>
 
-                <Typography fontWeight={'bold'} mb={2}>
-                    Tus solicitudes
-                </Typography>
                 <Grid item xs={12} sx={{
                     overflow: 'scroll',
                     width: '100%',
@@ -74,6 +70,9 @@ export const SolicitudesList = () => {
                             backgroundColor: '#f0f3f8',
                         }} className='table-head'>
                             <TableRow>
+                                <TableCell>
+                                    Cliente
+                                </TableCell>
                                 <TableCell>
                                     N° Solicitud
                                 </TableCell>
@@ -94,6 +93,9 @@ export const SolicitudesList = () => {
                                     <Fragment key={index}>
                                         <TableRow>
                                             <TableCell>
+                                                {item.user?.name} {item.user?.lastname}
+                                            </TableCell>
+                                            <TableCell>
                                                 #{item.id}
                                             </TableCell>
                                             <TableCell>
@@ -109,7 +111,7 @@ export const SolicitudesList = () => {
                                                 }
                                             </TableCell>
                                             <TableCell>
-                                                <Link to={`/requests/${item.id}`} style={{
+                                                <Link to={`/admin/requests/${item.id}`} style={{
                                                     textDecoration: 'none'
                                                 }}>
                                                     <button style={{
@@ -130,15 +132,15 @@ export const SolicitudesList = () => {
                             }
 
                             {
-                                requests.data?.data?.length === 0 && (
+                                requests.data?.data?.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={4}>
+                                        <TableCell colSpan={5}>
                                             <Typography variant='h6' align='center'>
                                                 No hay solicitudes
                                             </Typography>
                                         </TableCell>
                                     </TableRow>
-                                )
+                                ) : null
                             }
                         </TableBody>
                     </Table>

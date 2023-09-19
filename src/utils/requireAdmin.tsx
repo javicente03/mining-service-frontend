@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { getUser } from "./getAuthService";
 
 // @ts-ignore
-const RequireAuth = ({children}) => {
+const RequireAdmin = ({children}) => {
 
     const user = getUser();
     if (!user) {
@@ -11,12 +11,12 @@ const RequireAuth = ({children}) => {
     
     } else {
         // Si el usuario es admin, lo redirigimos a la ruta /admin
-        if (user.role === "admin") {
-            return <Navigate to="/admin" />;
+        if (user.role === "user") {
+            return <Navigate to="/" />;
         }
 
         return children;
     }
 };
 
-export default RequireAuth;
+export default RequireAdmin;

@@ -11,6 +11,13 @@ declare namespace Models {
             tipoTrabajo: {
                 name: string
             }
-        }[]
+        }[],
+        user?: {
+            name: string
+            lastname: string
+            email: string
+            rut: string
+            id: number
+        }
     }
 }
