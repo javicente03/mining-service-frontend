@@ -1,0 +1,29 @@
+.linearproccess {
+    background-color: #f6f6f7;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.linearproccess.progress-blue span {
+    background-color: #258ff1 !important;
+}
+
+.linearproccess.progress-green span {
+    background-color: #37cb77 !important;
+}
+
+.linearproccess.progress-red span {
+    background-color: #fb6065 !important;
+}
+
+.progress-blue {
+    color: #258ff1;
+}
+
+.progress-green {
+    color: #37cb77;
+}
+
+.progress-red {
+    color: #fb6065;
+}

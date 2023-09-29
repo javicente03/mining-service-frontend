@@ -195,7 +195,9 @@ export const SolicitudDetailAdmin = () => {
                                 () => {
                                     attendRequest.mutate({ response: 'approved' });
                                 }
-                            } sx={{ marginRight: { xs: '0', sm:'5px'} }}>
+                            } sx={{ marginRight: { xs: '0', sm:'5px'} }}
+                                disabled={attendRequest.isLoading}
+                            >
                                 Aceptar
                             </Button>
 
@@ -203,7 +205,9 @@ export const SolicitudDetailAdmin = () => {
                                 () => {
                                     attendRequest.mutate({ response: 'rejected', motivo: motivoRechazo });
                                 }
-                            } sx={{ marginLeft: { xs: '0', sm:'5px'}, marginTop: { xs: '5px', sm:'0'} }} >
+                            } sx={{ marginLeft: { xs: '0', sm:'5px'}, marginTop: { xs: '5px', sm:'0'} }} 
+                                disabled={motivoRechazo.trim() === '' || attendRequest.isLoading}
+                            >
                                 Rechazar
                             </Button>
                         </Grid>

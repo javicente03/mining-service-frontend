@@ -3,6 +3,7 @@ declare namespace Models {
         id: number
         userId: number
         status: string
+        status_ot: string | null
         description: string
         createdAt: string
         type_work: string
@@ -44,6 +45,7 @@ declare namespace Models {
             email: string
             rut: string
             id: number
+            thumbnail: string | null
         },
         motivo_rechazo_solicitud?: {
             id: number
