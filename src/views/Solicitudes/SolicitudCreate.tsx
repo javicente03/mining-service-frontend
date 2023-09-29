@@ -1,43 +1,22 @@
-import { AlertColor, Button, Checkbox, Dialog, DialogContent, Divider, FormControl, FormControlLabel, FormGroup, Grid, TextField, Typography } from "@mui/material";
+import { AlertColor, Button, Checkbox, Dialog, DialogContent, Divider, FormControl, FormControlLabel, FormGroup, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query"
 import { Fragment, useEffect, useState } from "react"
 import { GetTypesWorksRequest } from "../../helpers/requests"
 import mutatorRequest from "../../utils/mutatorRequest";
 import icon_worker from "../../assets/img/ast-03.png";
 import { SnakbarAlert } from "../../components/snakbar/snakbarAlert";
+import FormMaestranza from "./Forms/FormMaestranza";
+import FormEquipos from "./Forms/FormEquipos";
+import FormComponents from "./Forms/FormComponents";
+import FormTerrenoServicio from "./Forms/FormTerrenoServicio";
 
 export const SolicitudCreate = () => {
 
-    const types_work = useQuery(["GetTypesWorksRequest"], () => GetTypesWorksRequest());
-
-    const [ data, setData ] = useState<{
-        works: {
-            id: number,
-            description: string,
-        }[],
-        description: string,
-    }>({ works: [], description: '' })
+    const [data, setData] = useState<Models.FormCreateSolicitud>({ works: [], description: '', type_work: 'null', form_equipos: [], form_components: [], form_terreno: [] })
 
     const handleInputChange = (event: any) => {
         setData({ ...data, [event.target.name]: event.target.value })
     };
-
-    const isWorkChecked = (id: number) => {
-        return data.works.find((item) => item.id === id) ? true : false
-    }
-
-    const handleWorkChecked = (id: number) => {
-        if (isWorkChecked(id)) {
-            // Limpiar la descripción
-            setData({ ...data, works: data.works.filter((item) => item.id !== id) })
-        } else {
-            setData({ ...data, works: [...data.works, { id: id, description: '' }] })
-        }
-    }
-
-    const handleWorkDescription = (id: number, description: string) => {
-        setData({ ...data, works: data.works.map((item) => item.id === id ? { ...item, description: description } : item) })
-    }
 
     const createRequest = mutatorRequest('/requests/create', 'POST', data)
 
@@ -51,9 +30,53 @@ export const SolicitudCreate = () => {
             return
         }
 
-        if (data.works.length === 0) {
-            setViewAlert({ ...viewAlert, open: true, message: 'Debe seleccionar al menos un tipo de trabajo', color: 'error' });
+        if (data.type_work !== 'equipo' && data.type_work !== 'maestranza' && data.type_work !== 'componente' && data.type_work !== 'servicio_terreno') {
+            setViewAlert({ ...viewAlert, open: true, message: 'Debe seleccionar un tipo de trabajo', color: 'error' });
             return
+        }
+
+        // Si el tipo de trabajo es equipo
+        if (data.type_work === 'equipo') {
+            if (data.form_equipos.length === 0) {
+                setViewAlert({ ...viewAlert, open: true, message: 'Debe seleccionar al menos un tipo de equipo', color: 'error' });
+                return
+            }
+            if (data.form_equipos.find((item) => item.description.trim() === '' && item.type_field === 'text')) {
+                setViewAlert({ ...viewAlert, open: true, message: 'Faltan datos por llenar', color: 'error' });
+                return
+            }
+        }
+
+        // Si el tipo de trabajo es componente
+        if (data.type_work === 'componente') {
+            if (data.form_components.length === 0) {
+                setViewAlert({ ...viewAlert, open: true, message: 'Debe seleccionar al menos un tipo de componente', color: 'error' });
+                return
+            }
+            if (data.form_components.find((item) => item.description.trim() === '' && item.type_field === 'text')) {
+                setViewAlert({ ...viewAlert, open: true, message: 'Faltan datos por llenar', color: 'error' });
+                return
+            }
+        }
+
+        // Si el tipo de trabajo es maestranza
+        if (data.type_work === 'maestranza') {
+            if (data.works.length === 0) {
+                setViewAlert({ ...viewAlert, open: true, message: 'Debe seleccionar al menos un tipo de trabajo', color: 'error' });
+                return
+            }
+        }
+
+        // Si el tipo de trabajo es servicio en terreno
+        if (data.type_work === 'servicio_terreno') {
+            if (data.form_terreno.length === 0) {
+                setViewAlert({ ...viewAlert, open: true, message: 'Debe seleccionar al menos un tipo de servicio en terreno', color: 'error' });
+                return
+            }
+            if (data.form_terreno.find((item) => item.description.trim() === '')) {
+                setViewAlert({ ...viewAlert, open: true, message: 'Faltan datos por llenar', color: 'error' });
+                return
+            }
         }
 
         // Si alguno de los trabajos seleccionados tiene descripción vacía
@@ -67,7 +90,7 @@ export const SolicitudCreate = () => {
 
     useEffect(() => {
         if (createRequest.isSuccess) {
-            setData({ description: '', works: [] })
+            setData({ description: '', works: [], type_work: 'null', form_equipos: [], form_components: [], form_terreno: [] })
             setOpenDialogSuccess(true)
         }
 
@@ -78,10 +101,10 @@ export const SolicitudCreate = () => {
     }, [createRequest.isSuccess, createRequest.isError])
 
 
-    const [ openDialogSuccess, setOpenDialogSuccess ] = useState(false)
+    const [openDialogSuccess, setOpenDialogSuccess] = useState(false)
 
     // Alert de error
-    const [ viewAlert, setViewAlert ] = useState<{
+    const [viewAlert, setViewAlert] = useState<{
         open: boolean,
         message: string | JSX.Element,
         color: AlertColor,
@@ -96,7 +119,7 @@ export const SolicitudCreate = () => {
     return (
         <Fragment>
 
-            <SnakbarAlert 
+            <SnakbarAlert
                 open={viewAlert.open}
                 message={viewAlert.message}
                 color={viewAlert.color}
@@ -122,7 +145,7 @@ export const SolicitudCreate = () => {
 
                         <Grid item xs={12}></Grid>
                         <Grid item xs={12} sm={4} md={3}>
-                            <img src={icon_worker} alt="worker" width={'100%'}/>
+                            <img src={icon_worker} alt="worker" width={'100%'} />
                         </Grid>
                         <Grid item xs={12} sm={8} md={6} sx={{
                             overflow: 'scroll',
@@ -143,20 +166,61 @@ export const SolicitudCreate = () => {
                             </p>
 
                             {
-                                createRequest.data?.data?.solicitud?.tipos_trabajos_solicitud?.map((item: any, index: number) => (
-                                    <Fragment key={index}>
-                                        <Typography sx={{
-                                            color: 'white', fontSize: '14px',
-                                        }}>
-                                            {item.tipoTrabajo?.name}
-                                        </Typography>
-                                        <p style={{
-                                            color: 'white', fontSize: '11px', marginBottom: '10px'
-                                        }}>
-                                            {item.description}
-                                        </p>
-                                    </Fragment>
-                                ))
+                                createRequest.data?.data?.solicitud?.type_work === 'equipo' ?
+                                    createRequest.data?.data?.solicitud?.equipo_trabajo_solicitud?.map((item: any, index: number) => (
+                                        <Fragment key={index}>
+                                            <Typography sx={{
+                                                color: 'white', fontSize: '14px', marginBottom: '10px', fontWeight: 'bold'
+                                            }}>
+                                                {item.equipoTrabajo?.name}: <span style={{ fontWeight: 'normal' }}>
+                                                    {item.equipoTrabajo?.type_field === 'text' ? item.description : item.opcion?.name}
+                                                </span>
+                                            </Typography>
+                                        </Fragment>
+                                    ))
+                                : createRequest.data?.data?.solicitud?.type_work === 'componente' ?
+                                    createRequest.data?.data?.solicitud?.componente_solicitud?.map((item: any, index: number) => (
+                                        <Fragment key={index}>
+                                            <Typography sx={{
+                                                color: 'white', fontSize: '14px', marginBottom: '10px', fontWeight: 'bold'
+                                            }}>
+                                                {item.componente?.name}: <span style={{ fontWeight: 'normal' }}>
+                                                    {item.componente?.type_field === 'text' ? item.description : item.opcion?.name}
+                                                </span>
+                                            </Typography>
+                                        </Fragment>
+                                    ))
+                                : createRequest.data?.data?.solicitud?.type_work === 'maestranza' ?
+                                    createRequest.data?.data?.solicitud?.tipos_trabajos_solicitud?.map((item: any, index: number) => (
+                                        <Fragment key={index}>
+                                            <Typography sx={{
+                                                color: 'white', fontSize: '14px',
+                                            }}>
+                                                {item.tipoTrabajo?.name}
+                                            </Typography>
+                                            <p style={{
+                                                color: 'white', fontSize: '11px', marginBottom: '10px'
+                                            }}>
+                                                {item.description}
+                                            </p>
+                                        </Fragment>
+                                    ))
+                                : createRequest.data?.data?.solicitud?.type_work === 'servicio_terreno' ?
+                                    createRequest.data?.data?.solicitud?.servicio_terreno_solicitud?.map((item: any, index: number) => (
+                                        <Fragment key={index}>
+                                            <Typography sx={{
+                                                color: 'white', fontSize: '14px',
+                                            }}>
+                                                {item.servicioTerreno?.name}
+                                            </Typography>
+                                            <p style={{
+                                                color: 'white', fontSize: '11px', marginBottom: '10px'
+                                            }}>
+                                                {item.description}
+                                            </p>
+                                        </Fragment>
+                                    ))
+                                : null
                             }
                         </Grid>
 
@@ -195,48 +259,54 @@ export const SolicitudCreate = () => {
                     </Button>
                 </Grid>
 
-                <Grid item xs={12} mt={2} pl={2}>
-                    <Typography sx={{
-                        color: '#272936',
-                        fontSize: '14px',
-                    }}>
-                        Tipo de trabajo:
-                    </Typography>
-                </Grid>
-
                 <Grid item xs={12} p={1}>
                     <Grid container spacing={2}>
-                        {
-                            types_work.data?.data?.map((item, index: number) => (
-                                <Fragment key={index}>
-                                    <Grid item xs={12} sm={6} md={3}>
-                                        <FormGroup>
-                                            <FormControlLabel control={<Checkbox
-                                                sx={{
-                                                    color: '#ffac1e',
-                                                    '&.Mui-checked': {
-                                                        color: '#ffac1e',
-                                                    },
-                                                }}
-                                                checked={isWorkChecked(item.id)}
-                                                onChange={() => handleWorkChecked(item.id)}
-                                            />} label={item.name} />
-                                            <TextField className="input-text-principal" placeholder='Describir...'
-                                                multiline rows={1}
-                                                value={data.works.find((work) => work.id === item.id)?.description || ''}
-                                                onChange={(e) => handleWorkDescription(item.id, e.target.value)}
-                                                disabled={!isWorkChecked(item.id)}
-                                                sx={{
-                                                    ":disabled": { color: '#fff !important' }, 
-                                                }}
-                                            />
 
-                                        </FormGroup>
-                                    </Grid>
-                                </Fragment>
-                            ))
+                        <Grid item xs={12}>
+                            <Grid container>
+                                <Grid item xs={12} md={3}>
+                                    <FormGroup>
+                                        <Typography sx={{
+                                            color: '#272936',
+                                            fontSize: '14px',
+                                        }}>
+                                            Tipo de trabajo:
+                                        </Typography>
+                                        <Select
+                                            className="input-text-principal select-input-text-principal"
+                                            value={data.type_work}
+                                            onChange={handleInputChange}
+                                            name='type_work'
+                                            sx={{ ":disabled": { backgroundColor: '#fff' }, color: 'white' }}
+                                        >
+                                            <MenuItem value={'null'} disabled>Seleccionar</MenuItem>
+                                            <MenuItem value={'equipo'}>Equipo</MenuItem>
+                                            <MenuItem value={'componente'}>Componente</MenuItem>
+                                            <MenuItem value={'maestranza'}>Maestranza</MenuItem>
+                                            <MenuItem value={'servicio_terreno'}>Servicio en terreno</MenuItem>
+                                        </Select>
+                                    </FormGroup>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+                        {
+                            data.type_work === 'maestranza' ?
+                            <FormMaestranza data={data} setData={setData} /> :
+                            data.type_work === 'equipo' ?
+                            <FormEquipos data={data} setData={setData} /> :
+                            data.type_work === 'componente' ?
+                            <FormComponents data={data} setData={setData} /> :
+                            data.type_work === 'servicio_terreno' ?
+                            <FormTerrenoServicio data={data} setData={setData} /> :
+                            null
                         }
 
+                        <Grid item xs={12} display={
+                            {
+                                xs: 'none', sm: 'none', md: 'block'
+                            }
+                        }></Grid>
                         <Grid item xs={12} md={6}>
                             <Typography sx={{ color: '#272936', fontSize: '14px' }}>
                                 Descripción de la solicitud en línea:
@@ -265,7 +335,7 @@ export const SolicitudCreate = () => {
                     }} onClick={
                         () => { sendData() }
                     }
-                        disabled={ createRequest.isLoading }
+                        disabled={createRequest.isLoading}
                     >
                         Enviar
                     </Button>

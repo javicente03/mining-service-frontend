@@ -19,17 +19,17 @@ export const SolicitudesListAdmin = () => {
         let ret: string | JSX.Element = '';
         switch (status) {
             case 'pending':
-                ret = <Typography className="status-t2-yellow">
+                ret = <Typography className="status-blue">
                     Pendiente
                 </Typography>
                 break;
             case 'approved':
-                ret = <Typography className="status-t2-green">
+                ret = <Typography className="status-green">
                     Aprobada
                 </Typography>
                 break;
             case 'rejected':
-                ret = <Typography className="status-t2-red">
+                ret = <Typography className="status-red">
                     Rechazada
                 </Typography>
                 break;

@@ -157,3 +157,8 @@
     display: inline-block;
     font-size: 12px !important;
 }
+
+#menu-type_work ul, #menu-type_component ul {
+    background-color: #272936 !important;
+    color: white;
+}

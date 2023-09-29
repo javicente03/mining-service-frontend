@@ -30,3 +30,49 @@ export const GetTypesWorksRequest = async (): Promise<{
     const data = requestGet('/requests/types-work');
     return data;
 }
+
+export const GetFormEquipos = async (): Promise<{
+    data: {
+        id: number
+        name: string
+        deleted: boolean
+        createdAt: string
+        type_field: string
+        opciones_componente_solicitud: {
+            id: number
+            name: string
+        }[]
+      }[]
+}> => {
+    const data = requestGet('/requests/form-equipment');
+    return data;
+}
+
+export const GetFormComponents = async (): Promise<{
+    data: {
+        id: number
+        name: string
+        deleted: boolean
+        createdAt: string
+        type_field: string
+        opciones_componente_solicitud: {
+            id: number
+            name: string
+        }[]
+      }[]
+}> => {
+    const data = requestGet('/requests/form-components');
+    return data;
+}
+
+export const GetGroundServiceRequest = async (): Promise<{
+    data: {
+        id: number
+        name: string
+        deleted: boolean
+        createdAt: string
+      }[]
+}> => {
+    const data = requestGet('/requests/form-ground-service');
+    return data;
+}

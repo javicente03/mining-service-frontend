@@ -78,7 +78,7 @@ export default function SidebarLess({
             now: currentPath === '/requests/create',
         },
         {
-            name: 'Detalles de la solicitud',
+            name: 'Mis Solicitudes',
             link: '/requests',
             icon: <FileCopySharp />,
             iconImg: icon_solicitudes,

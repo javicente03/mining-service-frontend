@@ -33,13 +33,36 @@ export const SolicitudDetail = () => {
                 ret = <Typography className="status-red" sx={{
                     border: '#cecece 1px solid'
                 }}>
-                    Rechazada
+                    Rechazada: {request.data && request.data.data && request.data.data.motivo_rechazo_solicitud && request.data.data.motivo_rechazo_solicitud[0]?.description}
                 </Typography>
                 break;
             default:
                 ret = <Typography>
                     Pendiente
                 </Typography>
+                break;
+        }
+
+        return ret;
+    }
+
+    const formatTypeWork = (type_work: string = 'equipo') => {
+        let ret: string | JSX.Element = '';
+        switch (type_work) {
+            case 'equipo':
+                ret = 'Equipo'
+                break;
+            case 'componente':
+                ret = 'Componente'
+                break;
+            case 'maestranza':
+                ret = 'Maestranza'
+                break;
+            case 'servicio_terreno':
+                ret = 'Servicio de terreno'
+                break;
+            default:
+                ret = 'Equipo'
                 break;
         }
 
@@ -102,7 +125,17 @@ export const SolicitudDetail = () => {
                     </Typography>
                 </Grid>
 
-                <Grid item xs={12} mt={4}>
+                <Grid item xs={12} textAlign='center' mt={4}>
+                    <Button variant='contained' sx={{
+                        backgroundColor: 'transparent', color: '#f4ae33', border: '1px solid #272936',
+                        textTransform: 'capitalize', fontWeight: 'bold',
+                        ":disabled": { backgroundColor: 'transparent', color: '#f4ae33' },
+                    }} disabled>
+                        {formatTypeWork(request.data?.data?.type_work)}
+                    </Button>
+                </Grid>
+
+                <Grid item xs={12} mt={1}>
                     <Typography sx={{
                         fontWeight: 'bold',
                         color: '#272936'
@@ -111,25 +144,87 @@ export const SolicitudDetail = () => {
                     </Typography>
                     <Grid container spacing={2}>
                         {
-                            request.data?.data?.tipos_trabajos_solicitud.map((item, index: number) => (
-                                <Fragment key={index}>
-                                    <Grid item xs={12} md={6}>
-                                        <Typography sx={{
-                                            color: '#272936'
-                                        }}>
-                                            {item.tipoTrabajo?.name}
-                                        </Typography>
-                                        <Typography sx={{
-                                            color: 'white',
-                                            backgroundColor: '#ffac1e',
-                                            padding: '5px',
-                                            borderRadius: '5px',
-                                        }}>
-                                            {item.description}
-                                        </Typography>
-                                    </Grid>
-                                </Fragment>
-                            ))
+                            request.data?.data?.type_work === 'equipo' ?
+                                request.data?.data?.equipo_trabajo_solicitud?.map((item, index: number) => (
+                                    <Fragment key={index}>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography sx={{
+                                                color: '#272936'
+                                            }}>
+                                                {item.equipoTrabajo?.name}
+                                            </Typography>
+                                            <Typography sx={{
+                                                color: 'white',
+                                                backgroundColor: '#ffac1e',
+                                                padding: '5px',
+                                                borderRadius: '5px',
+                                            }}>
+                                                {item.equipoTrabajo?.type_field === 'select' ? item.opcion?.name : item.description}
+                                            </Typography>
+                                        </Grid>
+                                    </Fragment>
+                                ))
+                            : request.data?.data?.type_work === 'componente' ?
+                                request.data?.data?.componente_solicitud?.map((item, index: number) => (
+                                    <Fragment key={index}>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography sx={{
+                                                color: '#272936'
+                                            }}>
+                                                {item.componente?.name}
+                                            </Typography>
+                                            <Typography sx={{
+                                                color: 'white',
+                                                backgroundColor: '#ffac1e',
+                                                padding: '5px',
+                                                borderRadius: '5px',
+                                            }}>
+                                                {item.componente?.type_field === 'select' ? item.opcion?.name : item.description}
+                                            </Typography>
+                                        </Grid>
+                                    </Fragment>
+                                ))
+                            : request.data?.data?.type_work === 'maestranza' ?
+                                request.data?.data?.tipos_trabajos_solicitud?.map((item, index: number) => (
+                                    <Fragment key={index}>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography sx={{
+                                                color: '#272936'
+                                            }}>
+                                                {item.tipoTrabajo?.name}
+                                            </Typography>
+                                            <Typography sx={{
+                                                color: 'white',
+                                                backgroundColor: '#ffac1e',
+                                                padding: '5px',
+                                                borderRadius: '5px',
+                                            }}>
+                                                {item.description}
+                                            </Typography>
+                                        </Grid>
+                                    </Fragment>
+                                ))
+                            : request.data?.data?.type_work === 'servicio_terreno' ?
+                                request.data?.data?.servicio_terreno_solicitud?.map((item, index: number) => (
+                                    <Fragment key={index}>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography sx={{
+                                                color: '#272936'
+                                            }}>
+                                                {item.servicioTerreno?.name}
+                                            </Typography>
+                                            <Typography sx={{
+                                                color: 'white',
+                                                backgroundColor: '#ffac1e',
+                                                padding: '5px',
+                                                borderRadius: '5px',
+                                            }}>
+                                                {item.description}
+                                            </Typography>
+                                        </Grid>
+                                    </Fragment>
+                                ))
+                            : null
                         }
                     </Grid>
                 </Grid>
