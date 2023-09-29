@@ -1,8 +1,14 @@
-import { Fragment, useState } from "react"
-import { Grid, Button, Typography, Checkbox, FormControlLabel, FormGroup, FormControl, InputLabel, TextField, MenuItem, Select } from "@mui/material"
+import { Fragment, useEffect, useState } from "react"
+import { Grid, Button, Typography, Checkbox, FormControlLabel, FormGroup, FormControl, InputLabel, TextField, MenuItem, Select, AlertColor, Dialog, DialogContent, Divider } from "@mui/material"
 import { useQuery } from "@tanstack/react-query"
 import { GetOTByIdAdmin } from "../../../helpers/admin/ots"
 import { useParams } from "react-router-dom"
+import { formatAmount } from "../../../helpers/formatAmount"
+import FormPresupuestoApproved from "./Forms/FormPresupuestoApproved"
+import FormPresupuestoRejected from "./Forms/FormPresupuestoRejected"
+import { SnakbarAlert } from "../../../components/snakbar/snakbarAlert"
+import icon_worker from "../../../assets/img/ast-03.png";
+import mutatorRequest from "../../../utils/mutatorRequest"
 
 export const AsignacionPresupuesto = () => {
 
@@ -10,9 +16,37 @@ export const AsignacionPresupuesto = () => {
     const request = useQuery(['GetOTByIdAdmin', id], () => GetOTByIdAdmin(id));
 
     const [ data, setData ] = useState<Models.FormPresupuestoAsignacion>({
-        fecha: '',
+        date: '',
         status:'approved',
+        cost: 0,
+        desarme_evaluacion: false,
+        lavado: false,
+        evaluacion: false,
+        informe_tecnico: '',
+        motivo: '',
+        tipo_componente: 'tipo_1',
     })
+
+    useEffect(() => {
+        if (request.data?.data && request.data?.data?.presupuestoOt) {
+            console.log(request.data?.data?.presupuestoOt.evaluacion)
+            console.log(request.data?.data?.presupuestoOt.desarme_evaluacion)
+            console.log(request.data?.data?.presupuestoOt.lavado)
+            setData({
+                ...data,
+                date: request.data?.data?.presupuestoOt?.date?.split('T')[0] || '',
+                status: request.data?.data?.status_ot === 'pending' ? 'approved' : request.data?.data?.status_ot || 'approved',
+                cost: request.data?.data?.presupuestoOt?.cost,
+                desarme_evaluacion: request.data?.data?.presupuestoOt?.desarme_evaluacion,
+                lavado: request.data?.data?.presupuestoOt?.lavado,
+                evaluacion: request.data?.data?.presupuestoOt?.evaluacion,
+                informe_tecnico: request.data?.data?.presupuestoOt?.informe_tecnico,
+                motivo: request.data?.data?.presupuestoOt?.motivo_rechazo,
+                tipo_componente: request.data?.data?.presupuestoOt?.tipo_componente,
+            })
+            console.log('entro aqui')
+        }
+    }, [request.data])
 
     const formatStatus = (status: string) => {
         let ret: string | JSX.Element = '';
@@ -60,10 +94,97 @@ export const AsignacionPresupuesto = () => {
         return ret;
     }
 
+    useEffect(() => {
+        console.log(data)
+    }, [data])
+
+    const senBudget = mutatorRequest('/admin/ots/send-budget/'+id, 'POST', {
+        ...data,
+        informe_tecnico: data.informe_tecnico.trim(),
+    });
+
+    useEffect(() => {
+        if (senBudget.isSuccess) {
+            setOpenDialogSuccess(true);
+            request.refetch();
+        }
+
+        if (senBudget.isError) {
+            setViewAlert({
+                open: true,
+                // @ts-ignore
+                message: senBudget.error.response.data.error || 'Error al atender la solicitud',
+                color: 'error',
+                onClose: () => setViewAlert({ ...viewAlert, open: false })
+            });
+        }
+    }, [senBudget.isSuccess, senBudget.isError])
+
+    const [ openDialogSuccess, setOpenDialogSuccess ] = useState<boolean>(false);
+
+    // Alert de error
+    const [ viewAlert, setViewAlert ] = useState<{
+        open: boolean,
+        message: string | JSX.Element,
+        color: AlertColor,
+        onClose: any
+    }>({
+        open: false,
+        message: '',
+        color: 'error',
+        onClose: () => setViewAlert({ ...viewAlert, open: false })
+    });
+
     return (
         <Fragment>
 
-            <Grid container border={'2px solid #f78f15'} style={{ borderRadius: '10px', padding: '10px', height: '85vh', alignContent: 'baseline' }}>
+            <Dialog open={openDialogSuccess} onClose={() => setOpenDialogSuccess(false)} maxWidth='xs' fullWidth className="modal-dialog">
+                <DialogContent className="modal-principal">
+
+                    <Grid container justifyContent={'center'}>
+                        <Grid item xs={12} md={6} mb={5}>
+                            <Typography className="modal-principal-title">
+                                Orden N° #{id} Aprobada
+                            </Typography>
+                            <Divider
+                                sx={{
+                                    backgroundColor: '#fff',
+                                    height: '3px',
+                                    marginTop: '2px',
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}></Grid>
+                        <Grid item xs={6} sm={4} md={3}>
+                            <img src={icon_worker} alt="worker" width={'100%'} style={{
+                                border: '2px solid green', borderRadius: '50%'
+                            }}/>
+                        </Grid>
+
+                        <Grid item xs={12}></Grid>
+                        <Grid item xs={12} mt={5} textAlign='center'>
+                            <Button variant="contained" className="modal-principal-button-success" onClick={
+                                () => {
+                                    setOpenDialogSuccess(false)
+                                }
+                            }>
+                                Aceptar
+                            </Button>
+                        </Grid>
+                    </Grid>
+
+                </DialogContent>
+            </Dialog>
+
+            <SnakbarAlert 
+                open={viewAlert.open}
+                message={viewAlert.message}
+                color={viewAlert.color}
+                onClose={viewAlert.onClose}
+            />
+
+            <Grid container border={'2px solid #f78f15'} style={{ borderRadius: '10px', padding: '10px' }}>
                 <Grid item xs={12} p={2} sx={{
                     display: 'flex', flexWrap: 'wrap'
                 }}>
@@ -92,120 +213,27 @@ export const AsignacionPresupuesto = () => {
                     </Button>
                 </Grid>
 
-                <Grid item xs={12} md={8} m='0 auto'>
+                <Grid item xs={12} md={
+                    data.status === 'approved' ? 8 : 6
+                } m='0 auto'>
                     <Grid container mt={2}>
-                        <Grid item xs={12} md={6} sx={{
-                            borderRight: {
-                                // El borde debe ser algo difuminado
-                                xs: 'none', md: '1px solid #c7c7c7'
-                            }, borderBottom: {
-                                xs: '1px solid #c7c7c7', md: 'none'
-                            }, padding: '5px',
-                        }}>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <FormGroup>
-                                        <FormControlLabel control={<Checkbox
-                                            sx={{
-                                                color: '#ffac1e',
-                                                '&.Mui-checked': {
-                                                    color: '#ffac1e',
-                                                },
-                                            }}
-                                        />} label={
-                                            <Typography fontWeight={'bold'}>
-                                                Proceso de Lavado
-                                            </Typography>
-                                        } />
-                                    </FormGroup>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FormGroup>
-                                        <FormControlLabel control={<Checkbox
-                                            sx={{
-                                                color: '#ffac1e',
-                                                '&.Mui-checked': {
-                                                    color: '#ffac1e',
-                                                },
-                                            }}
-                                        />} label={
-                                            <Typography fontWeight={'bold'}>
-                                                Evaluación <span style={{ color: '#f6b754', fontWeight: 'initial' }}>
-                                                    (Máquina)
-                                                </span>
-                                            </Typography>
-                                        } />
-                                    </FormGroup>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FormGroup>
-                                        <FormControlLabel control={<Checkbox
-                                            sx={{
-                                                color: '#ffac1e',
-                                                '&.Mui-checked': {
-                                                    color: '#ffac1e',
-                                                },
-                                            }}
-                                        />} label={
-                                            <Typography fontWeight={'bold'}>
-                                                Desarme y Evaluación <span style={{
-                                                    color: '#f6b754', fontWeight: 'initial'
-                                                }}>
-                                                    (Componente)
-                                                </span>
-                                            </Typography>
-                                        } />
-                                    </FormGroup>
-                                </Grid>
-
-                                <Grid item xs={12} mt={2}>
-                                    <FormControl fullWidth>
-                                        <Typography sx={{
-                                            fontSize: '12px', color: '#000', fontWeight: 'bold'
-                                        }}>
-                                            Informe Técnico
-                                        </Typography>
-                                        <TextField 
-                                            className="input-text-principal"
-                                            multiline rows={3}
-                                            sx={{
-                                                ":disabled": { color: '#000 !important' }, 
-                                            }}
-                                            placeholder='Escriba aquí...'
-                                        />
-                                    </FormControl>
-                                </Grid>
-
-                                <Grid item xs={12} mt={2}>
-                                    <FormControl fullWidth>
-                                        <Typography sx={{
-                                            fontSize: '12px', color: '#000', fontWeight: 'bold'
-                                        }}>
-                                            Tipo de Componente
-                                        </Typography>
-                                        <Select
-                                            className="input-text-principal select-input-text-principal"
-                                            name='type_component'
-                                            sx={{ ":disabled": { backgroundColor: '#fff' }, color: 'white' }}
-                                            value={0}
-                                        >
-                                            <MenuItem value={0} disabled>Seleccionar</MenuItem>
-                                            <MenuItem key={1} value={1}>Tipo 1</MenuItem>
-                                            <MenuItem key={2} value={2}>Tipo 2</MenuItem>
-                                            <MenuItem key={3} value={3}>Tipo 3</MenuItem>
-                                            <MenuItem key={4} value={4}>Tipo 4</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} md={6} sx={{
+                        {
+                            data.status === 'approved' &&
+                                <FormPresupuestoApproved data={data} setData={setData} />
+                        }
+                        <Grid item xs={12} md={
+                            data.status === 'approved' ? 6 : 12
+                        } sx={{
                             borderLeft: {
                                 // El borde debe ser algo difuminado
-                                xs: 'none', md: '1px solid #c7c7c7'
+                                xs: 'none', md: data.status === 'approved' ? '1px solid #c7c7c7' : 'none'
                             }, borderTop: {
                                 xs: '1px solid #c7c7c7', md: 'none'
-                            }, padding: '5px',
+                            }, padding: '5px', paddingLeft: {
+                                xs: '0', md: '20px'
+                            }, paddingTop: {
+                                xs: '20px', md: '0'
+                            }
                         }}>
                             <Grid container>
                                 <Grid item xs={12}>
@@ -225,8 +253,76 @@ export const AsignacionPresupuesto = () => {
                                         </Select>
                                     </FormControl>
                                 </Grid>
+
+                                {
+                                    data.status === 'approved' &&
+                                        <Grid item xs={12} mt={2}>
+                                            <FormControl fullWidth>
+                                                <Typography sx={{
+                                                    fontSize: '12px', color: '#000', fontWeight: 'bold'
+                                                }}>
+                                                    Asignar Fecha
+                                                </Typography>
+                                                <input type="date" className="input-text-principal" style={{
+                                                    backgroundColor: '#fff', color: '#000', padding: '20px 10px', borderRadius: '5px', marginTop: '5px'
+                                                }} 
+                                                    // No permitir fechas anteriores a la actual
+                                                    min={new Date().toISOString().split('T')[0]}
+                                                    value={data.date}
+                                                    onChange={(e) => setData({ ...data, date: e.target.value })}
+                                                />
+                                            </FormControl>
+                                        </Grid>
+                                }
+
+                                {
+                                    data.status === 'rejected' &&
+                                        <FormPresupuestoRejected data={data} setData={setData} request={request} />
+                                }
                             </Grid>
                         </Grid>
+
+                        {
+                            data.status === 'approved' &&
+                                <Grid item xs={12} mt={2}>
+                                    <Grid container justifyContent={'center'}>
+                                        <Grid item xs={12} md={6} lg={4} textAlign='center'>
+                                            <FormControl>
+                                                <Typography sx={{
+                                                    fontSize: '12px', color: '#000', fontWeight: 'bold', marginTop: '10px', textAlign: 'center'
+                                                }}>
+                                                    Precio
+                                                </Typography>
+                                                <TextField 
+                                                    className="input-text-principal no-border text-center"
+                                                    value={formatAmount(data.cost) || 0}
+                                                    onChange={(e) => {
+                                                        // Limpiar el valor de los puntos y el signo $
+                                                        let value = e.target.value.replace(/\$|\.|\s/g, '')
+                                                        // Si el valor no es un número, no hacer nada
+                                                        console.log(value)
+                                                        // Si el valor es empty string mandar 0
+                                                        if (value === '') {
+                                                            setData({...data, cost: 0 })
+                                                        }
+                                                        if (isNaN(parseInt(value))) return;
+                                                        // Setear el valor
+                                                        setData({ ...data, cost: parseInt(value) })
+                                                    }}
+                                                />
+                                                <Button sx={{ backgroundColor: '#272936', color: '#fff', marginTop: '10px', display: 'block', width: '100%',
+                                                    ":hover": { backgroundColor: '#272936', color: '#fff' },
+                                                }}
+                                                    onClick={() => senBudget.mutate()}
+                                                    disabled={senBudget.isLoading}
+                                                >
+                                                    Aceptar
+                                                </Button>
+                                            </FormControl>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                        }
                     </Grid>    
                 </Grid>
             </Grid>

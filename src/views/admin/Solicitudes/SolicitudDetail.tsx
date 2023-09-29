@@ -274,7 +274,7 @@ export const SolicitudDetailAdmin = () => {
 
                         <Grid item xs={12}></Grid>
                         <Grid item xs={12} mt={5} textAlign='center'>
-                            <Link to='/admin/ot/create' style={{
+                            <Link to={'/admin/ots/budget/'+id} style={{
                                 textDecoration: 'none'
                             }}>
                                 <Button variant="contained" className="modal-principal-button-success" onClick={

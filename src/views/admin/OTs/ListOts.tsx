@@ -165,8 +165,8 @@ export const OTsListAdmin = () => {
                                             <TableCell>
                                                 {formatStatus(item.status_ot)}
                                             </TableCell>
-                                            <TableCell>
-                                                {format(new Date(item.createdAt), 'dd/MM/yyyy', { locale: es })}
+                                            <TableCell sx={{ textTransform: 'capitalize' }}>
+                                                {format(new Date(item.createdAt), 'dd MMM yyyy', { locale: es })}
                                             </TableCell>
                                             <TableCell>
                                                 <Link to={'/admin/ots/budget/'+item.id}>

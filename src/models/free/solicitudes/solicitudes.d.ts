@@ -51,6 +51,17 @@ declare namespace Models {
             id: number
             description: string
             createdAt: string
-        }[]
+        }[],
+        presupuestoOt?: {
+            id: number
+            lavado: boolean
+            evaluacion: boolean
+            desarme_evaluacion: boolean
+            informe_tecnico: string
+            tipo_componente: string
+            cost: number
+            date: string
+            motivo_rechazo: string
+        } | null
     }
 }
