@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Grid, LinearProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material"
+import { Avatar, AvatarGroup, Box, Button, Grid, LinearProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material"
 import { useQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
@@ -50,11 +50,30 @@ export const OTsListAdmin = () => {
 
         return <Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ width: '100%', mr: 1 }}>
+                <Box sx={{ width: '50%', mr: 1 }}>
                     <LinearProgress variant="determinate" value={process} className={`linearproccess ${className_progress}`} />
                 </Box>
-                <Box sx={{ minWidth: 35 }}>
+                <Box sx={{ minWidth: '50%', display: 'flex', alignItems: 'center' }}>
                     <Typography variant="body2" className={className_progress}>{process}%</Typography>
+                    <AvatarGroup total={24} sx={{
+                        width: '70%', marginLeft: {
+                            xs: '30px', md: '25px'
+                        }
+                    }} className='avatarProgress'
+                    >
+                            <Avatar alt="Remy Sharp" src='https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80' sx={{
+                                width: '30px', height: '30px'
+                            }} />
+                            <Avatar alt="Travis Howard" src='https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80' sx={{
+                                width: '30px', height: '30px'
+                            }} />
+                            <Avatar alt="Agnes Walker" src='https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80' sx={{
+                                width: '30px', height: '30px'
+                            }} />
+                            <Avatar alt="Trevor Henderson" src='https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80' sx={{
+                                width: '30px', height: '30px'
+                            }} />
+                    </AvatarGroup>
                 </Box>
             </Box>
         </Fragment>
@@ -95,7 +114,7 @@ export const OTsListAdmin = () => {
                                 </TableCell>
                                 <TableCell sx={{
                                     minWidth: {
-                                        xs: '150px', md: '150px', lg: '100px'
+                                        xs: '300px', md: '350ox'
                                     }
                                 }}>
                                     Proceso
@@ -150,7 +169,7 @@ export const OTsListAdmin = () => {
                                                 {format(new Date(item.createdAt), 'dd/MM/yyyy', { locale: es })}
                                             </TableCell>
                                             <TableCell>
-                                                <Link to={'/admin/ots/'+item.id}>
+                                                <Link to={'/admin/ots/budget/'+item.id}>
                                                     <button style={{
                                                         backgroundColor: '#272936',
                                                         color: '#fff',

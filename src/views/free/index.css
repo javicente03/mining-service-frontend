@@ -162,3 +162,16 @@
     background-color: #272936 !important;
     color: white;
 }
+
+.select-input-text-secondary {
+    background-color: white;
+    font-weight: bold;
+}
+
+.select-input-text-secondary.green {
+    color: #37cb77;
+}
+
+.select-input-text-secondary.red {
+    color: #fb6065;
+}

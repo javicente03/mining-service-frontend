@@ -27,3 +27,8 @@
 .progress-red {
     color: #fb6065;
 }
+
+.avatarProgress .MuiAvatar-root.MuiAvatar-circular.MuiAvatar-colorDefault.MuiAvatarGroup-avatar.css-sxh3gq-MuiAvatar-root-MuiAvatarGroup-avatar {
+    width: 30px;
+    height: 30px;
+}
