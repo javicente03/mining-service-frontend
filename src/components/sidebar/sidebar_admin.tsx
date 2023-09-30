@@ -13,6 +13,7 @@ import icon_perfil from '../../assets/img/icon-perfil.png';
 import icon_requests from '../../assets/img/icon-requests.png';
 import icon_insumos from '../../assets/img/icon-insumos.png';
 import icon_ots_create from '../../assets/img/icon-ots-create.png';
+import logo from '../../assets/img/logo_sidebar.png';
 import './sidebar.css'
 
 const drawerWidth = 240;
@@ -114,7 +115,9 @@ export const SidebarAdmin = () => {
                 anchor="left"
                 className="sidebar-menu"
             >
-                <Toolbar style={{backgroundColor: '#272936'}}/>
+                <Toolbar style={{backgroundColor: '#272936'}}>
+                    <img src={logo} alt="logo" style={{width: '70%', height: '90%', objectFit: 'contain', margin: '0 auto'}} />
+                </Toolbar>
                 <Divider />
                 <List>
                     {opts.map((opt, index) => (

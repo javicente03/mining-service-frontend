@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { Grid, Typography } from "@mui/material";
-import otsej1 from '../../assets/img/otsej1.jpg';
-import otsej2 from '../../assets/img/otsej2.jpg';
-import otsej3 from '../../assets/img/otsej3.jpg';
+import otsej1 from '../../assets/img/otdash1.png';
+import otsej2 from '../../assets/img/otdash2.png';
+import otsej3 from '../../assets/img/otdash3.png';
 
 export const HomeAdmin = () => {
     console.log('otsej1', otsej1);
@@ -90,29 +90,44 @@ export const HomeAdmin = () => {
                 </Grid>
 
                 <Grid item xs={12} style={{
-                    boxShadow: 'rgba(0, 0, 0, 0.2) 4px 4px 3px 0px', borderRadius: '10px', backgroundColor: '#fff',
+                    boxShadow: 'rgba(0, 0, 0, 0.2) 4px 4px 3px 0px', borderRadius: '10px', backgroundColor: '#fff', paddingBottom: '40px'
                 }} mt={4}>
                     <Typography fontSize={'14px'} style={{color: '#369fe8', fontSize: '16px'}}>
                         Estado de OT
                     </Typography>
                     <Grid container justifyContent={'center'}>
-                        <Grid item xs={12} md={3} style={{display: 'flex', justifyContent: 'right', alignItems: 'right'}}>
-                            <img src={otsej1} alt={'otsej1'} width={'150px'} style={{
-                                height: '200px', 
-                                // objectFit: 'contain'
-                            }} />
-                        </Grid>
-                        <Grid item xs={12} md={3} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                            <img src={otsej2} alt={'otsej2'} width={'150px'} style={{
-                                height: '200px', 
-                                // objectFit: 'contain'
-                            }} />
-                        </Grid>
-                        <Grid item xs={12} md={3} style={{display: 'flex', justifyContent: 'left', alignItems: 'left'}}>
-                            <img src={otsej3} alt={'otsej3'} width={'150px'} style={{
-                                height: '200px', 
-                                // objectFit: 'contain'
-                            }} />
+                        <Grid item xs={12} md={9} display={{
+                            xs: 'none', md: 'block'
+                        }}>
+                            <Grid container>
+                                <Grid item xs={12} md={4}>
+                                    <img src={otsej1} alt={'otsej1'} width={'100%'} style={{
+                                        height: '100%', 
+                                        // objectFit: 'contain'
+                                    }} />
+                                    <Typography>
+                                        Pendiente Por Aprobación
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <Typography>
+                                        La orden de trabajo está siendo realizada
+                                    </Typography>
+                                    <img src={otsej2} alt={'otsej2'} width={'100%'} style={{
+                                        height: '100%', 
+                                        // objectFit: 'contain'
+                                    }} />
+                                </Grid>
+                                <Grid item xs={12} md={4}>
+                                    <img src={otsej3} alt={'otsej3'} width={'100%'} style={{
+                                        height: '100%', 
+                                        // objectFit: 'contain'
+                                    }} />
+                                    <Typography>
+                                        Su orden de trabajo ha finalizado
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

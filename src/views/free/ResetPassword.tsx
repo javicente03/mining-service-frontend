@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Grid, Typography, Button, Container, AlertColor } from "@mui/material";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import './index.css'
-import logo from '../../assets/img/logofake.png'
+import logo from '../../assets/img/logominigservicesweb.webp'
 import mutatorRequest from "../../utils/mutatorRequest";
 import { useRut } from "react-rut-formatter";
 import { AuthLogin } from "../../utils/AuthService";
@@ -110,8 +110,14 @@ export const ResetPassword = () => {
                 background: 'linear-gradient(45deg, rgba(39,41,54,1) 0%, rgba(51,53,64,1) 66%)',
             }}>
                 <Container>
-                    <Grid container justifyContent={'center'} style={{
-                        height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    <Grid container justifyContent={'center'} sx={{
+                        height: '100vh', display: 'flex', alignItems: {
+                            xs: 'initial', md: 'center'
+                        }, justifyContent: {
+                            xs: 'initial', md: 'center'
+                        }, paddingTop: {
+                            xs: '40px', md: '0'
+                        }
                     }}>
                         <Grid item xs={12} md={9}>
                             <Grid container sx={{
@@ -128,23 +134,7 @@ export const ResetPassword = () => {
                                     <div style={{
                                         backgroundColor: '#ffad1d', width: '70%', textAlign: 'center', padding: '10px',
                                     }}>
-                                        <img src={logo} alt="logo" style={{ width: '40px', height: 'auto' }} />
-                                        <Typography sx={{
-                                            color: '#050000',
-                                            fontSize: '1.5rem',
-                                            textTransform: 'uppercase',
-                                        }}>
-                                            Mining Services Chile
-                                        </Typography>
-                                        <Typography style={{
-                                            color: '#050000',
-                                            fontSize: '12px',
-                                            textTransform: 'uppercase',
-                                            // separacion de letras
-                                            letterSpacing: '0.2rem',
-                                        }}>
-                                            Servicios para la minería
-                                        </Typography>
+                                        <img src={logo} alt="logo" style={{ width: '100%', height: 'auto' }} />
                                     </div>
                                 </Grid>
                                 <Grid item xs={12} md={6} textAlign='center' className="bg-img-login-2" borderRadius={{

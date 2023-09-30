@@ -15,6 +15,8 @@ import icon_ots from '../../assets/img/icon-ots.png';
 import icon_solicitudes from '../../assets/img/icon-solicitudes.png';
 import icon_settings from '../../assets/img/icon-settings.png';
 import icon_logout from '../../assets/img/icon-logout.png';
+import icon_plus from '../../assets/img/icon-plus.png';
+import logo from '../../assets/img/logo_sidebar.png';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -75,6 +77,7 @@ export default function SidebarLess({
             name: 'Nueva Solicitud',
             link: '/requests/create',
             icon: <Add fontSize="large" />,
+            iconImg: icon_plus,
             now: currentPath === '/requests/create',
         },
         {
@@ -114,10 +117,9 @@ export default function SidebarLess({
                 width: '100%',
                 height: '100px',
                 backgroundColor: '#272936',
+                textAlign: 'center',
             }}>
-                {/* <img src={logo} alt="logo" style={{
-                    width: '100%',
-                }} /> */}
+                <img src={logo} alt="logo" style={{width: '70%', height: '90%', objectFit: 'contain' }} />
             </div>
             <List>
                 {opts.map((opt, index) => (

@@ -9,6 +9,8 @@ import icon_ots from '../../assets/img/icon-ots.png';
 import icon_solicitudes from '../../assets/img/icon-solicitudes.png';
 import icon_settings from '../../assets/img/icon-settings.png';
 import icon_logout from '../../assets/img/icon-logout.png';
+import icon_plus from '../../assets/img/icon-plus.png';
+import logo from '../../assets/img/logo_sidebar.png';
 
 const drawerWidth = 240;
 
@@ -44,6 +46,7 @@ export const Sidebar = () => {
             name: 'Nueva Solicitud',
             link: '/requests/create',
             icon: <Add fontSize="large" />,
+            iconImg: icon_plus,
             now: currentPath === '/requests/create',
         },
         {
@@ -86,7 +89,10 @@ export const Sidebar = () => {
                 variant="permanent"
                 anchor="left"
             >
-                <Toolbar style={{backgroundColor: '#272936'}}/>
+                <Toolbar style={{backgroundColor: '#272936'}} >
+                    <img src={logo} alt="logo" style={{width: '70%', height: '90%', objectFit: 'contain', margin: '0 auto'}} />
+                </Toolbar>
+
                 <Divider />
                 <List>
                     {opts.map((opt, index) => (
@@ -97,7 +103,7 @@ export const Sidebar = () => {
                                         {/* {opt.icon} */}
                                         {
                                             opt.iconImg ? (
-                                                <img src={opt.iconImg} alt={opt.name} style={{width: '40px'}} />
+                                                <img src={opt.iconImg} alt={opt.name} style={{width: '40px', height: '40px', objectFit: 'contain'}} />
                                             ) : (
                                                 opt.icon
                                             )
