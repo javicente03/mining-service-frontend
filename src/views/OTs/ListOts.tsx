@@ -1,20 +1,19 @@
-import { Avatar, AvatarGroup, Box, Button, Grid, LinearProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material"
+import { Avatar, AvatarGroup, Box, Grid, LinearProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography, Button } from "@mui/material"
 import { useQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 import { Fragment, useState } from "react"
 import { Link } from "react-router-dom"
-import Paginator from "../../../components/Paginator/Paginator"
-import { GetOTSAdmin } from "../../../helpers/admin/ots"
-import './progress.css'
+import Paginator from "../../components/Paginator/Paginator"
+import { GetOTS } from "../../helpers/ots"
 
-export const OTsListAdmin = () => {
+export const ListOts = () => {
 
     const [filters, setFilters] = useState({
         skip: 0,
         limit: 10,
     })
-    const requests = useQuery(['GetOTSAdmin', filters], () => GetOTSAdmin(filters))
+    const ots = useQuery(['GetOTS', filters], () => GetOTS(filters))
 
     const formatStatus = (status: string | null = '') => {
         let ret: string | JSX.Element = '';
@@ -154,7 +153,7 @@ export const OTsListAdmin = () => {
                         </TableHead>
                         <TableBody className='table-body'>
                             {
-                                requests.data?.data?.map((item, index: number) => (
+                                ots.data?.data?.map((item, index: number) => (
                                     <Fragment key={index}>
                                         <TableRow>
                                             <TableCell>
@@ -191,7 +190,7 @@ export const OTsListAdmin = () => {
                                                 {format(new Date(item.createdAt), 'dd MMM yyyy', { locale: es })}
                                             </TableCell>
                                             <TableCell>
-                                                <Link to={'/admin/ots/budget/'+item.id}>
+                                                {/* <Link to={'/admin/ots/budget/'+item.id}> */}
                                                     <button style={{
                                                         backgroundColor: '#272936',
                                                         color: '#fff',
@@ -202,7 +201,7 @@ export const OTsListAdmin = () => {
                                                     }}>
                                                         Ver
                                                     </button>
-                                                </Link>
+                                                {/* </Link> */}
                                             </TableCell>
                                         </TableRow>
                                     </Fragment>
@@ -210,7 +209,7 @@ export const OTsListAdmin = () => {
                             }
 
                             {
-                                requests.data?.data?.length === 0 ? (
+                                ots.data?.data?.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={6}>
                                             <Typography variant='h6' align='center'>
@@ -226,9 +225,9 @@ export const OTsListAdmin = () => {
 
                 <Grid item xs={12} mt={2}>
                     {
-                        requests.data?.total ? (
+                        ots.data?.total ? (
                             <Paginator
-                                filters={filters} setFilters={setFilters} query={requests.data.total}
+                                filters={filters} setFilters={setFilters} query={ots.data.total}
                             />
                         ) : null
                     }

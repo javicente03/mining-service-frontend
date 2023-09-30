@@ -16,6 +16,10 @@
     background-color: #fb6065 !important;
 }
 
+.linearproccess.progress-orange span {
+    background-color: #f9d200 !important;
+}
+
 .progress-blue {
     color: #258ff1;
 }
@@ -26,6 +30,10 @@
 
 .progress-red {
     color: #fb6065;
+}
+
+.progress-orange {
+    color: #f9d200;
 }
 
 .avatarProgress .MuiAvatar-root.MuiAvatar-circular.MuiAvatar-colorDefault.MuiAvatarGroup-avatar.css-sxh3gq-MuiAvatar-root-MuiAvatarGroup-avatar {

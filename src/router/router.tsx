@@ -13,6 +13,7 @@ import { ForgotPassword } from "../views/free/ForgotPassword";
 import { Login } from "../views/free/login";
 import { ResetPassword } from "../views/free/ResetPassword";
 import { Home } from "../views/home";
+import { ListOts } from "../views/OTs/ListOts";
 import { SolicitudCreate } from "../views/Solicitudes/SolicitudCreate";
 import { SolicitudDetail } from "../views/Solicitudes/SolicitudDetail";
 import { SolicitudesList } from "../views/Solicitudes/Solicitudes";
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
             {
                 path: "/requests/create",
                 element: <SolicitudCreate />,
+            },
+            {
+                path: "/ots",
+                element: <ListOts />,
             }
         ]
     },

@@ -201,6 +201,25 @@ export const AsignacionPresupuesto = () => {
                     }
                 </Grid>
 
+                {
+                    request.data?.data?.status_ot === 'rejected' && request.data?.data?.motivo_rechazo_solicitud_cliente 
+                        && request.data?.data?.motivo_rechazo_solicitud_cliente?.length > 0 &&
+                            <Grid item xs={12}>
+                                <Typography className="status-red" sx={{
+                                    border: '#cecece 1px solid', marginLeft: {
+                                        xs: '0', sm: '10px'
+                                    }, marginTop: '10px', display: {
+                                        xs: 'block', sm: 'inline-block'
+                                    }
+                                }}>
+                                    Motivo de Rechazo: &nbsp;
+                                    {
+                                    request.data?.data?.motivo_rechazo_solicitud_cliente[0].description
+                                    }
+                                </Typography>
+                            </Grid>
+                }
+
                 <Grid item xs={12} textAlign='center' mt={3}>
                     <Button variant='contained' sx={{
                         backgroundColor: '#272936', color: '#fff', boxShadow:'rgba(0, 0, 0, 0.2) 4px 4px 3px 0px !important',

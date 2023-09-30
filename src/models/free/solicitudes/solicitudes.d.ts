@@ -62,6 +62,11 @@ declare namespace Models {
             cost: number
             date: string
             motivo_rechazo: string
-        } | null
+        } | null,
+        motivo_rechazo_solicitud_cliente?: {
+            id: number
+            description: string
+            createdAt: string
+        }[],
     }
 }
