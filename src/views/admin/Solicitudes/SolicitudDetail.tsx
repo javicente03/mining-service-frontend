@@ -9,12 +9,14 @@ import icon_worker from "../../../assets/img/ast-03.png";
 import mutatorRequestParam from "../../../utils/mutatorRequestParam";
 import { SnakbarAlert } from "../../../components/snakbar/snakbarAlert";
 import ModalImage from "../../../components/modals/ModalImage";
+import { SizeHook } from "../../../utils/SizeHook";
 
 export const SolicitudDetailAdmin = () => {
 
     const { id } = useParams<{ id: string }>();
 
     const request = useQuery(['GetRequestsAdminById', id], () => GetRequestsAdminById(id));
+    const size = SizeHook();
 
     const formatStatus = (status: string) => {
         let ret: string | JSX.Element = '';
@@ -538,9 +540,13 @@ export const SolicitudDetailAdmin = () => {
                                     Registro fotográfico
                                 </Typography>
                                 <ImageList
-                                    sx={{ width: 500, }}
+                                    sx={{ width: {
+                                        xs: '100%', sm: '100%', md: '500'
+                                    }, }}
                                     variant="quilted"
-                                    cols={4}
+                                    cols={
+                                        size.width < 600 ? 1 : size.width < 960 ? 3 : 4
+                                    }
                                     rowHeight={121}
                                     >
                                     {request.data?.data?.registro_fotografico_solicitud?.map((item, index: number) => (
