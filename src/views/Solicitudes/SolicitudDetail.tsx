@@ -406,7 +406,7 @@ export const SolicitudDetail = () => {
                             : null
                         }
 
-                        {request.data?.data?.registro_fotografico_solicitud &&
+                        {request.data?.data?.registro_fotografico_solicitud && request.data?.data?.registro_fotografico_solicitud.length > 0 &&
                             <Grid item xs={12}>
                                 <Typography sx={{
                                     fontWeight: 'bold',
