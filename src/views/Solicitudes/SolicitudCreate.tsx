@@ -45,6 +45,11 @@ export const SolicitudCreate = () => {
                 setViewAlert({ ...viewAlert, open: true, message: 'Faltan datos por llenar', color: 'error' });
                 return
             }
+
+            if (!data.img || data.img === '') {
+                setViewAlert({ ...viewAlert, open: true, message: 'Debe seleccionar una imagen', color: 'error' });
+                return
+            }
         }
 
         // Si el tipo de trabajo es componente
@@ -55,6 +60,11 @@ export const SolicitudCreate = () => {
             }
             if (data.form_components.find((item) => item.description.trim() === '' && item.type_field === 'text')) {
                 setViewAlert({ ...viewAlert, open: true, message: 'Faltan datos por llenar', color: 'error' });
+                return
+            }
+
+            if (!data.img || data.img === '') {
+                setViewAlert({ ...viewAlert, open: true, message: 'Debe seleccionar una imagen', color: 'error' });
                 return
             }
         }
@@ -90,7 +100,7 @@ export const SolicitudCreate = () => {
 
     useEffect(() => {
         if (createRequest.isSuccess) {
-            setData({ description: '', works: [], type_work: 'null', form_equipos: [], form_components: [], form_terreno: [] })
+            setData({ description: '', works: [], type_work: 'null', form_equipos: [], form_components: [], form_terreno: [], img: '', img_format: '' })
             setOpenDialogSuccess(true)
         }
 

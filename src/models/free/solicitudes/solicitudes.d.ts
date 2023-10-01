@@ -68,5 +68,11 @@ declare namespace Models {
             description: string
             createdAt: string
         }[],
+        registro_fotografico_solicitud?: {
+            id: number
+            url: string
+            createdAt: string
+            solicitudId: number
+        }[],
     }
 }

@@ -1,4 +1,4 @@
-import { AlertColor, Button, FormControl, Grid, TextField, Typography } from "@mui/material";
+import { AlertColor, Button, FormControl, Grid, ImageList, ImageListItem, TextField, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { Fragment, useEffect, useState } from "react"
@@ -9,6 +9,7 @@ import { formatAmount } from "../../helpers/formatAmount";
 import mutatorRequestParam from "../../utils/mutatorRequestParam";
 import { SnakbarAlert } from "../../components/snakbar/snakbarAlert";
 import ModalSuccessGenerico from "../../components/modals/ModalSuccessGenerico";
+import ModalImage from "../../components/modals/ModalImage";
 
 export const SolicitudDetail = () => {
 
@@ -106,6 +107,20 @@ export const SolicitudDetail = () => {
 
     const [ openDialogAccept, setOpenDialogAccept ] = useState<boolean>(false);
     const [ openDialogReject, setOpenDialogReject ] = useState<boolean>(false);
+
+    function srcset(image: string, size: number, rows = 1, cols = 1) {
+        return {
+          src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
+          srcSet: `${image}?w=${size * cols}&h=${
+            size * rows
+          }&fit=crop&auto=format&dpr=2 2x`,
+        };
+    }
+
+    const [ openDialogImage, setOpenDialogImage ] = useState<{
+        open: boolean,
+        url: string
+    }>({ open: false, url: '' });
     
     // Alert de error
     const [ viewAlert, setViewAlert ] = useState<{
@@ -128,6 +143,10 @@ export const SolicitudDetail = () => {
                 message={viewAlert.message}
                 color={viewAlert.color}
                 onClose={viewAlert.onClose}
+            />
+
+            <ModalImage 
+                openDialogSuccess={openDialogImage} setOpenDialogSuccess={setOpenDialogImage}
             />
 
             <ModalSuccessGenerico 
@@ -386,6 +405,43 @@ export const SolicitudDetail = () => {
                                 ))
                             : null
                         }
+
+                        {request.data?.data?.registro_fotografico_solicitud &&
+                            <Grid item xs={12}>
+                                <Typography sx={{
+                                    fontWeight: 'bold',
+                                    color: '#272936'
+                                }}>
+                                    Registro fotográfico
+                                </Typography>
+                                <ImageList
+                                    sx={{ width: 500, }}
+                                    variant="quilted"
+                                    cols={4}
+                                    rowHeight={121}
+                                    >
+                                    {request.data?.data?.registro_fotografico_solicitud?.map((item, index: number) => (
+                                        <Fragment key={index}>
+                                            <ImageListItem key={item.url} cols={1} rows={1}>
+                                                <img
+                                                    // Seguir el patron de la serie de imagenes de arriba
+                                                    {...srcset(item.url, 121, (index + 1 > 4 ? 2 : 1), (index + 1 > 4 ? 2 : 1))}
+                                                    alt={'image'}
+                                                    loading="lazy" style={{ cursor: 'pointer' }}
+                                                    onClick={() => {
+                                                        setOpenDialogImage({
+                                                            open: true,
+                                                            url: item.url
+                                                        })
+                                                    }}
+                                                />
+                                            </ImageListItem>
+                                        </Fragment>
+                                    ))}
+                                </ImageList>
+                            </Grid>
+                        }
+
                     </Grid>
                 </Grid>
 

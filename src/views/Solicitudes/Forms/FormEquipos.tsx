@@ -1,7 +1,10 @@
-import { Fragment, useEffect } from "react";
-import { Grid, FormGroup, InputLabel, TextField, Select, MenuItem } from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
+import { Grid, FormGroup, InputLabel, TextField, Select, MenuItem, IconButton, AlertColor, Button } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { GetFormEquipos } from "../../../helpers/requests";
+import { Add, Close } from "@mui/icons-material";
+import EncodeBase64 from "../../../utils/UploadImage";
+import { SnakbarAlert } from "../../../components/snakbar/snakbarAlert";
 
 export default function FormEquipos({
     data, setData
@@ -29,8 +32,58 @@ export default function FormEquipos({
         }
     }, [form.data])
 
+    const UploadImage = (e: any) => {
+
+        // El formato de la imagen debe ser png o jpg
+        if (e.target.files[0].type !== 'image/png' && e.target.files[0].type !== 'image/jpeg') {
+            setViewAlert({
+                open: true,
+                message: 'El formato de la imagen debe ser png o jpg',
+                color: 'error',
+                onClose: () => setViewAlert({ ...viewAlert, open: false })
+            })
+            return;
+        }
+
+        // El tamaño de la imagen no debe ser mayor a 10MB
+        if (e.target.files[0].size > 10000000) {
+            setViewAlert({
+                open: true,
+                message: 'El tamaño de la imagen no debe ser mayor a 10MB',
+                color: 'error',
+                onClose: () => setViewAlert({ ...viewAlert, open: false })
+            })
+            return;
+        }
+
+        EncodeBase64(e.target.files[0], (result: any) => {
+            let imgClean = result.split(',')[1];
+            setData({ ...data, img: imgClean, img_format: e.target.files[0].type })
+        })
+    }
+
+    // Alert de error
+    const [viewAlert, setViewAlert] = useState<{
+        open: boolean,
+        message: string | JSX.Element,
+        color: AlertColor,
+        onClose: any
+    }>({
+        open: false,
+        message: '',
+        color: 'error',
+        onClose: () => setViewAlert({ ...viewAlert, open: false })
+    });
+
     return (
         <Fragment>
+
+            <SnakbarAlert
+                open={viewAlert.open}
+                message={viewAlert.message}
+                color={viewAlert.color}
+                onClose={viewAlert.onClose}
+            />
 
             {
                 data.form_equipos?.map((item, index: number) => (
@@ -75,8 +128,52 @@ export default function FormEquipos({
 
             <Grid item xs={12} sm={6} md={3}>
                 <FormGroup>
-                    <InputLabel className="label-principal" sx={{ marginLeft: "10px"}} >Imágen</InputLabel>
-                    <input type={'file'} className="input-text-principal" />
+                    <InputLabel className="label-principal" sx={{ textAlign: 'center' }} >Registro Fotográfico</InputLabel>
+                    <span style={{
+                        textAlign: 'center', fontSize: '11px'
+                    }}>
+                        Toma de fotografía para ingresar información en el proceso de evaluación
+                    </span>
+                    <input type={'file'} style={{
+                        display: 'none'
+                    }} id="fileImg" onChange={UploadImage} 
+                        accept="image/png, image/jpeg"
+                    />
+                    {
+                        !data.img || data.img === '' ?
+                    <InputLabel className="label-principal" sx={{ height: '80px', width: '140px', backgroundColor: '#272936', margin: '0 auto', borderRadius: '10px', position: 'relative' }}
+                        htmlFor="fileImg"
+                    >
+                        <InputLabel sx={{
+                            backgroundColor: '#ffac1e', color: '#fff',
+                            width: '30px', height: '30px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            position: 'absolute', top: '-15px', right: '0',
+                            "&:hover": {
+                                backgroundColor: '#ffac1e',
+                                color: '#fff'
+                            }
+                        }} size="small" htmlFor="fileImg">
+                            <Add />
+                        </InputLabel>
+                    </InputLabel>
+                        :
+                    <InputLabel className="label-principal" sx={{ height: '80px', width: '140px', backgroundColor: '#272936', margin: '0 auto', borderRadius: '10px', position: 'relative' }}
+                        htmlFor="fileImg"
+                    >
+                        <img src={`data:${data.img_format};base64,${data.img}`} alt="img" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <IconButton sx={{
+                            backgroundColor: '#ffac1e', color: '#fff', cursor: 'pointer',
+                            position: 'absolute', top: '0', right: '0',
+                            "&:hover": {
+                                backgroundColor: '#ffac1e',
+                                color: '#fff'
+                            }
+                        }} size="small" onClick={() => setData({ ...data, img: '', img_format: '' })}
+                        >
+                            <Close />
+                        </IconButton>
+                    </InputLabel>
+                    }
                 </FormGroup>
             </Grid>
 
