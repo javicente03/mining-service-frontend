@@ -5,6 +5,8 @@ declare namespace Models {
             description: string,
         }[],
         description: string,
+        img?: string,
+        img_format?: string,
         type_work: 'equipo' | 'maestranza' | 'componente' | 'servicio_terreno' | 'null',
         form_equipos: {
             id: number,
