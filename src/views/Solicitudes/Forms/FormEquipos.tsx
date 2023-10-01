@@ -73,6 +73,13 @@ export default function FormEquipos({
                 ))
             }
 
+            <Grid item xs={12} sm={6} md={3}>
+                <FormGroup>
+                    <InputLabel className="label-principal" sx={{ marginLeft: "10px"}} >Imágen</InputLabel>
+                    <input type={'file'} className="input-text-principal" />
+                </FormGroup>
+            </Grid>
+
         </Fragment>
     )
 }
