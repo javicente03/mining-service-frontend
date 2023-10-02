@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Grid, Typography, Button, Container, AlertColor } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import './index.css'
-import logo from '../../assets/img/logominigservicesweb.webp'
+import logo from '../../assets/img/logominigservicesweb.png'
 import mutatorRequest from "../../utils/mutatorRequest";
 import { useRut } from "react-rut-formatter";
 import { AuthLogin } from "../../utils/AuthService";
