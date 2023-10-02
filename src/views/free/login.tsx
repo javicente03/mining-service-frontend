@@ -21,7 +21,7 @@ export const Login = () => {
     };
 
     const login = mutatorRequest('/admin/auth/login', 'POST', {
-        rut: rut.formatted,
+        rut: rut.raw,
         password: data.password,
     })
 

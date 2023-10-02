@@ -1,10 +1,13 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
-import otsej1 from '../assets/img/otdash1.png';
-import otsej2 from '../assets/img/otdash2.png';
-import otsej3 from '../assets/img/otdash3.png';
+import otsej1 from '../assets/img/otsdash1.png';
+import otsej2 from '../assets/img/otsdash2.png';
+import otsej3 from '../assets/img/otsdash3.png';
+import { SizeHook } from "../utils/SizeHook";
 
 export const Home = () => {
+
+    const size = SizeHook();
 
     return (
         <Fragment>
@@ -96,36 +99,25 @@ export const Home = () => {
                         Estado de OT
                     </Typography>
                     <Grid container justifyContent={'center'}>
-                        <Grid item xs={12} md={9} display={{
-                            xs: 'none', md: 'block'
-                        }}>
+                        <Grid item xs={12} md={9} >
                             <Grid container>
                                 <Grid item xs={12} md={4}>
                                     <img src={otsej1} alt={'otsej1'} width={'100%'} style={{
-                                        height: '100%', 
-                                        // objectFit: 'contain'
+                                        height: size.width < 600 ? '350px' : size.width < 900 ? '450px' : '100%',
+                                        objectFit: 'contain'
                                     }} />
-                                    <Typography>
-                                        Pendiente Por Aprobación
-                                    </Typography>
                                 </Grid>
                                 <Grid item xs={12} md={4}>
-                                    <Typography>
-                                        La orden de trabajo está siendo realizada
-                                    </Typography>
                                     <img src={otsej2} alt={'otsej2'} width={'100%'} style={{
-                                        height: '100%', 
-                                        // objectFit: 'contain'
+                                        height: size.width < 600 ? '350px' : size.width < 900 ? '450px' : '100%',
+                                        objectFit: 'contain'
                                     }} />
                                 </Grid>
                                 <Grid item xs={12} md={4}>
                                     <img src={otsej3} alt={'otsej3'} width={'100%'} style={{
-                                        height: '100%', 
-                                        // objectFit: 'contain'
+                                        height: size.width < 600 ? '350px' : size.width < 900 ? '450px' : '100%',
+                                        objectFit: 'contain'
                                     }} />
-                                    <Typography>
-                                        Su orden de trabajo ha finalizado
-                                    </Typography>
                                 </Grid>
                             </Grid>
                         </Grid>

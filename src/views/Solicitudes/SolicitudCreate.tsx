@@ -139,7 +139,7 @@ export const SolicitudCreate = () => {
             <Dialog open={openDialogSuccess} onClose={() => setOpenDialogSuccess(false)} maxWidth='md' fullWidth className="modal-dialog">
                 <DialogContent className="modal-principal">
 
-                    <Grid container justifyContent={'center'}>
+                    <Grid container justifyContent={'space-evenly'}>
                         <Grid item xs={12} md={3} mb={5}>
                             <Typography className="modal-principal-title">
                                 Solicitud Enviada N°#{createRequest.data?.data?.solicitud?.id}
@@ -154,7 +154,7 @@ export const SolicitudCreate = () => {
                         </Grid>
 
                         <Grid item xs={12}></Grid>
-                        <Grid item xs={12} sm={4} md={3}>
+                        <Grid item xs={12} sm={3} md={3}>
                             <img src={icon_worker} alt="worker" width={'100%'} />
                         </Grid>
                         <Grid item xs={12} sm={8} md={6} sx={{

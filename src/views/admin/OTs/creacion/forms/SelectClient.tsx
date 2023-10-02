@@ -163,7 +163,7 @@ export default function FormSelectClient({
                             <InputLabel className="label-principal" >Fecha de Inicio</InputLabel>
                             <input className="input-text-principal" type="date"
                                 value={data.fecha_ingreso} name="fecha_ingreso" onChange={handleInputChange} style={{
-                                    color: '#000', padding: '20px 10px', borderRadius: '5px',
+                                    color: '#fff', padding: '20px 10px', borderRadius: '5px',
                                 }} 
                                 min={new Date().toISOString().split('T')[0]}
                             />

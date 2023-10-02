@@ -14,7 +14,7 @@ export const ForgotPassword = () => {
     const { rut, isValid, updateRut } = useRut();
 
     const forgot_password = mutatorRequest('/auth/forgot-password', 'POST', {
-        rut: rut.formatted,
+        rut: rut.raw,
     })
 
     const [ openDialogSuccess, setOpenDialogSuccess ] = useState(false);
