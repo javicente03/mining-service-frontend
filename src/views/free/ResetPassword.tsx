@@ -134,7 +134,7 @@ export const ResetPassword = () => {
                                     <div style={{
                                         backgroundColor: '#ffad1d', width: '70%', textAlign: 'center', padding: '10px',
                                     }}>
-                                        <img src={logo} alt="logo" style={{ width: '100%', height: 'auto' }} />
+                                        <img src={logo} alt="logo" style={{ width: '70%', height: 'auto' }} />
                                     </div>
                                 </Grid>
                                 <Grid item xs={12} md={6} textAlign='center' className="bg-img-login-2" borderRadius={{
