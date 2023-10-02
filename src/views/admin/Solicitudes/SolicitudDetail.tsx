@@ -226,7 +226,9 @@ export const SolicitudDetailAdmin = () => {
                                 () => {
                                     attendRequest.mutate({ response: 'rejected', motivo: motivoRechazo });
                                 }
-                            } sx={{ marginLeft: { xs: '0', sm:'5px'}, marginTop: { xs: '5px', sm:'0'} }} 
+                            } sx={{ marginLeft: { xs: '0', sm:'5px'}, marginTop: { xs: '5px', sm:'0'},
+                                ":disabled": { opacity: '0.5' }
+                            }} 
                                 disabled={motivoRechazo.trim() === '' || attendRequest.isLoading}
                             >
                                 Rechazar

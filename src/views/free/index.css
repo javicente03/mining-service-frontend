@@ -29,6 +29,10 @@
     outline: none;
 }
 
+.autocomplete-input input {
+    border: none !important;
+}
+
 .input-text-principal {
     background-color: #ffac1e;
     border: 1px solid #272936;
