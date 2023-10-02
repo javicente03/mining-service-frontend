@@ -6,6 +6,7 @@ import RequireAdmin from "../utils/requireAdmin";
 import RequireAuth from "../utils/requireAuth";
 import { HomeAdmin } from "../views/admin/home";
 import { AsignacionPresupuesto } from "../views/admin/OTs/AsignacionPresupuesto";
+import { OTCreate } from "../views/admin/OTs/creacion/CreacionOt";
 import { OTsListAdmin } from "../views/admin/OTs/ListOts";
 import { SolicitudDetailAdmin } from "../views/admin/Solicitudes/SolicitudDetail";
 import { SolicitudesListAdmin } from "../views/admin/Solicitudes/SolicitudesList";
@@ -87,6 +88,10 @@ export const router = createBrowserRouter([
             {
                 path: "/admin/ots/budget/:id",
                 element: <AsignacionPresupuesto />
+            },
+            {
+                path: "/admin/ots/create",
+                element: <OTCreate />
             }
         ]
     }

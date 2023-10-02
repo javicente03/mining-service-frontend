@@ -24,7 +24,7 @@ export const AsignacionPresupuesto = () => {
         evaluacion: false,
         informe_tecnico: '',
         motivo: '',
-        tipo_componente: 'tipo_1',
+        tipo_componenteId: 0,
     })
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export const AsignacionPresupuesto = () => {
                 evaluacion: request.data?.data?.presupuestoOt?.evaluacion,
                 informe_tecnico: request.data?.data?.presupuestoOt?.informe_tecnico,
                 motivo: request.data?.data?.presupuestoOt?.motivo_rechazo,
-                tipo_componente: request.data?.data?.presupuestoOt?.tipo_componente,
+                tipo_componenteId: request.data?.data?.presupuestoOt?.tipo_componenteId,
             })
             console.log('entro aqui')
         }

@@ -8,6 +8,6 @@ declare namespace Models {
         evaluacion: boolean,
         desarme_evaluacion: boolean,
         informe_tecnico: string,
-        tipo_componente: string,
+        tipo_componenteId: number,
     }
 }

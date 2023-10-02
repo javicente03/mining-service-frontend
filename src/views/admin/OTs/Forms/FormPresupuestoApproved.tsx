@@ -1,5 +1,7 @@
 import { Fragment } from "react";
 import { Grid, Typography, Checkbox, FormControlLabel, FormGroup, FormControl, TextField, MenuItem, Select } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { GetTiposComponentes } from "../../../../helpers/admin/forms";
 
 export default function FormPresupuestoApproved({
     data, setData
@@ -7,6 +9,8 @@ export default function FormPresupuestoApproved({
     data: Models.FormPresupuestoAsignacion,
     setData: React.Dispatch<React.SetStateAction<Models.FormPresupuestoAsignacion>>,
 }): JSX.Element {
+
+    const types_components = useQuery(['GetTiposComponentes'], () => GetTiposComponentes())
 
     return (
         <Fragment>
@@ -122,14 +126,15 @@ export default function FormPresupuestoApproved({
                                 className="input-text-principal select-input-text-principal"
                                 name='type_component'
                                 sx={{ ":disabled": { backgroundColor: '#fff' }, color: 'white' }}
-                                value={data.tipo_componente}
-                                onChange={ (e) => setData({ ...data, tipo_componente: e.target.value as string }) }
+                                value={data.tipo_componenteId}
+                                onChange={ (e) => setData({ ...data, tipo_componenteId: e.target.value as number }) }
                             >
-                                <MenuItem value={data.tipo_componente} disabled>Seleccionar</MenuItem>
-                                <MenuItem key={1} value={'tipo_1'}>Tipo 1</MenuItem>
-                                <MenuItem key={2} value={'tipo_2'}>Tipo 2</MenuItem>
-                                <MenuItem key={3} value={'tipo_3'}>Tipo 3</MenuItem>
-                                <MenuItem key={4} value={'tipo_4'}>Tipo 4</MenuItem>
+                                <MenuItem value={0} disabled>Seleccionar</MenuItem>
+                                {
+                                    types_components.data?.data.map((item, index: number) => (
+                                        <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
+                                    ))
+                                }
                             </Select>
                         </FormControl>
                     </Grid>
