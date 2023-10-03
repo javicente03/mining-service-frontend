@@ -4,12 +4,18 @@ import LayoutUser from "../layout/layoutUser";
 import NoRequireAuth from "../utils/noRequireAuth";
 import RequireAdmin from "../utils/requireAdmin";
 import RequireAuth from "../utils/requireAuth";
+import { CreateCompany } from "../views/admin/Companies/CreateCompany";
+import { ListCompanies } from "../views/admin/Companies/ListCompanies";
+import { UpdateCompany } from "../views/admin/Companies/UpdateCompany";
 import { HomeAdmin } from "../views/admin/home";
 import { AsignacionPresupuesto } from "../views/admin/OTs/AsignacionPresupuesto";
 import { OTCreate } from "../views/admin/OTs/creacion/CreacionOt";
 import { OTsListAdmin } from "../views/admin/OTs/ListOts";
 import { SolicitudDetailAdmin } from "../views/admin/Solicitudes/SolicitudDetail";
 import { SolicitudesListAdmin } from "../views/admin/Solicitudes/SolicitudesList";
+import { CreateUser } from "../views/admin/Users/CreateUser";
+import { ListUsers } from "../views/admin/Users/ListUsers";
+import { UpdateUser } from "../views/admin/Users/UpdateUser";
 import { ForgotPassword } from "../views/free/ForgotPassword";
 import { Login } from "../views/free/login";
 import { ResetPassword } from "../views/free/ResetPassword";
@@ -92,6 +98,30 @@ export const router = createBrowserRouter([
             {
                 path: "/admin/ots/create",
                 element: <OTCreate />
+            },
+            {
+                path: "/admin/users",
+                element: <ListUsers />
+            },
+            {
+                path: "/admin/users/create",
+                element: <CreateUser />
+            },
+            {
+                path: "/admin/users/update/:id",
+                element: <UpdateUser />
+            },
+            {
+                path: "/admin/companies",
+                element: <ListCompanies />
+            },
+            {
+                path: "/admin/companies/create",
+                element: <CreateCompany />
+            },
+            {
+                path: "/admin/companies/update/:id",
+                element: <UpdateCompany />
             }
         ]
     }

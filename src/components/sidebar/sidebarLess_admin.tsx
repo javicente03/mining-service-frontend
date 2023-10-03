@@ -6,7 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Home, StackedLineChart, FormatListBulletedSharp, Add, FileCopySharp, Settings, Logout } from "@mui/icons-material";
+import { Home, StackedLineChart, FormatListBulletedSharp, Add, FileCopySharp, Settings, Logout, BusinessCenter, Business } from "@mui/icons-material";
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthLogout } from '../../utils/AuthService';
 import icon_home from '../../assets/img/icon-home.png';
@@ -64,11 +64,17 @@ export default function SidebarLessAdmin({
             now: currentPath === '/admin/home' || currentPath === '/admin', 
         },
         {
+            name: 'Empresas',
+            link: '/admin/companies',
+            icon: <Business />,
+            now: currentPath === '/admin/companies', 
+        },
+        {
             name: 'Perfiles',
-            link: '/admin/profiles',
+            link: '/admin/users',
             icon: <Home />,
             iconImg: icon_perfil,
-            now: currentPath === '/admin/profiles',
+            now: currentPath === '/admin/users',
         },
         {
             name: 'Dashboard',

@@ -13,6 +13,8 @@ import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import SidebarLessAdmin from '../sidebar/sidebarLess_admin';
 import { SidebarAdmin } from '../sidebar/sidebar_admin';
+import { AuthLogout, GetUser } from '../../utils/AuthService';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -29,9 +31,24 @@ export default function NavbarAdmin({
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const navigateTo = useNavigate();
 
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const settings = [
+    {
+      link: '/profile',
+      name: 'Perfil'
+    },
+    {
+      option: () => {
+        AuthLogout()
+        navigateTo('/login')
+      },
+      name: 'Cerrar sesión'
+    }
+  ];
   const [ openDrawer, setOpenDrawer ] = React.useState(false);
+
+  const user = GetUser()
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -80,9 +97,11 @@ export default function NavbarAdmin({
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting, index: number) => (
+                <MenuItem key={index} onClick={
+                  setting.option ? setting.option : () => navigateTo(setting.link)
+                }>
+                  <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>

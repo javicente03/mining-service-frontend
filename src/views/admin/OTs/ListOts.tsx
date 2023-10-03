@@ -163,7 +163,7 @@ export const OTsListAdmin = () => {
                                             <TableCell>
                                                 {
                                                     item.user?.thumbnail ? (
-                                                        <img src={'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80'} alt={item.user?.name} 
+                                                        <img src={item.user.thumbnail} alt={item.user?.name} 
                                                             style={{ width: '30px', height: '30px', borderRadius: '50%',
                                                                 display: 'inline-flex', verticalAlign: 'middle', marginRight: '5px'
                                                             }} />
@@ -178,7 +178,7 @@ export const OTsListAdmin = () => {
                                                     )
                                                 }
                                                 <span>
-                                                    {item.user?.name} Gerardo Oliveros leon
+                                                    {item.user?.name} {item.user?.lastname}
                                                 </span>
                                             </TableCell>
                                             <TableCell>

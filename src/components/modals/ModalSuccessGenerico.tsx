@@ -7,7 +7,7 @@ export default function ModalSuccessGenerico({
     openDialogSuccess: boolean
     setOpenDialogSuccess: any
     title: string
-    subtitle: string | undefined
+    subtitle?: string | undefined
 }): JSX.Element {
     return (
         <Fragment>
@@ -32,7 +32,7 @@ export default function ModalSuccessGenerico({
                         <Grid item xs={12}></Grid>
                         <Grid item xs={12} sm={10}>
                             <p style={{
-                                color: 'white', textAlign: 'justify'
+                                color: 'white', textAlign: 'center'
                             }}>
                                 {subtitle}
                             </p>

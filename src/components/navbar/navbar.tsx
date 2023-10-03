@@ -14,6 +14,8 @@ import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 import { Sidebar } from '../sidebar/sidebar';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import SidebarLess from '../sidebar/sidebarLess';
+import { AuthLogout, GetUser } from '../../utils/AuthService';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -31,8 +33,24 @@ export default function Navbar({
     setAnchorElUser(null);
   };
 
-  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  const navigateTo = useNavigate();
+
+  const settings = [
+    {
+      link: '/profile',
+      name: 'Perfil'
+    },
+    {
+      option: () => {
+        AuthLogout()
+        navigateTo('/login')
+      },
+      name: 'Cerrar sesión'
+    }
+  ];
   const [ openDrawer, setOpenDrawer ] = React.useState(false);
+
+  const user = GetUser()
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -61,7 +79,12 @@ export default function Navbar({
           >
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircle fontSize='large' />
+                {
+                  user?.thumbnail ? (
+                    <Avatar alt={user.name} src={user.thumbnail} sx={{ width: 40, height: 40 }} />
+                  )
+                : <AccountCircle fontSize='large' />
+                }
                 <ArrowDropDown fontSize='small' />
               </IconButton>
             </Tooltip>
@@ -81,9 +104,11 @@ export default function Navbar({
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting, index: number) => (
+                <MenuItem key={index} onClick={
+                  setting.option ? setting.option : () => navigateTo(setting.link)
+                }>
+                  <Typography textAlign="center">{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>

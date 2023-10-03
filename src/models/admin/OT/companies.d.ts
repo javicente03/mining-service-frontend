@@ -6,5 +6,6 @@ declare namespace Models {
         direccion: string
         telefono: string
         logo: any
+        createdAt: string
     }
 }

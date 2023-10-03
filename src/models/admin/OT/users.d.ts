@@ -7,6 +7,8 @@ declare namespace Models {
         lastname: string
         password: string
         role: string
+        cargo: string
+        phone: string
         thumbnail: any
         active: boolean
         deleted: boolean

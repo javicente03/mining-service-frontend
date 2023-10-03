@@ -182,7 +182,7 @@
     font-size: 12px !important;
 }
 
-#menu-type_work ul, #menu-type_component ul {
+#menu-type_work ul, #menu-type_component ul, #menu-type_rol ul, #menu-type_active ul {
     background-color: #272936 !important;
     color: white;
 }
