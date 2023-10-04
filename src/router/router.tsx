@@ -4,6 +4,7 @@ import LayoutUser from "../layout/layoutUser";
 import NoRequireAuth from "../utils/noRequireAuth";
 import RequireAdmin from "../utils/requireAdmin";
 import RequireAuth from "../utils/requireAuth";
+import { PageNotFound } from "../views/404/404PageNotFound";
 import { CreateCompany } from "../views/admin/Companies/CreateCompany";
 import { ListCompanies } from "../views/admin/Companies/ListCompanies";
 import { UpdateCompany } from "../views/admin/Companies/UpdateCompany";
@@ -124,5 +125,9 @@ export const router = createBrowserRouter([
                 element: <UpdateCompany />
             }
         ]
+    },
+    {
+        path: "*",
+        element: <PageNotFound />,
     }
 ]);

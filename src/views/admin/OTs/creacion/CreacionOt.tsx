@@ -8,7 +8,7 @@ import FormEquipos from "../../../Solicitudes/Forms/FormEquipos";
 import FormComponents from "../../../Solicitudes/Forms/FormComponents";
 import FormTerrenoServicio from "../../../Solicitudes/Forms/FormTerrenoServicio";
 import FormSelectClient from "./forms/SelectClient";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const OTCreate = () => {
 
@@ -113,6 +113,7 @@ export const OTCreate = () => {
         createRequest.mutate()
     }
 
+    const navigateTo = useNavigate()
     useEffect(() => {
         if (createRequest.isSuccess) {
             setData({ description: '', works: [], type_work: 'null', form_equipos: [], form_components: [], form_terreno: [], img: '', img_format: '', userId: 0, companyId: 0, numero_gd: '', fecha_ingreso: '' })
@@ -151,7 +152,10 @@ export const OTCreate = () => {
                 onClose={viewAlert.onClose}
             />
 
-            <Dialog open={openDialogSuccess} onClose={() => setOpenDialogSuccess(false)} maxWidth='md' fullWidth className="modal-dialog">
+            <Dialog open={openDialogSuccess} onClose={() => {
+                setOpenDialogSuccess(false)
+                navigateTo('/admin/ots')
+            }} maxWidth='md' fullWidth className="modal-dialog">
                 <DialogContent className="modal-principal">
 
                     <Grid container justifyContent={'space-evenly'}>
@@ -250,10 +254,12 @@ export const OTCreate = () => {
                         </Grid>
 
                         <Grid item xs={12}></Grid>
-                        <Grid item xs={12} mt={5} textAlign='center'>
-                            <Link to={'/admin/ots/budget/' + createRequest.data?.data?.solicitud?.id}>
-                                <Button variant="contained" className="modal-principal-button-success">
-                                    Asignar Presupuesto
+                        <Grid item xs={12} sm={6} md={3} textAlign='center'>
+                            <Link to={'/admin/ots/budget/' + createRequest.data?.data?.solicitud?.id} style={{
+                                textDecoration: 'none',
+                            }}>
+                                <Button variant="contained" className="modal-principal-button-success" fullWidth >
+                                    Crear Cotización
                                 </Button>
                             </Link>
                         </Grid>

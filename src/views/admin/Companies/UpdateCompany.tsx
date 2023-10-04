@@ -125,6 +125,7 @@ export const UpdateCompany = () => {
 
             <ModalSuccessGenerico openDialogSuccess={openDialogSuccess} setOpenDialogSuccess={setOpenDialogSuccess}
                 title={'Empresa modificada correctamente'}
+                returnTo={'/admin/companies'}
             />
             
             <Grid container border={'2px solid #f78f15'} style={{ borderRadius: '10px', padding: '10px' }}>

@@ -9,6 +9,7 @@ import FormMaestranza from "./Forms/FormMaestranza";
 import FormEquipos from "./Forms/FormEquipos";
 import FormComponents from "./Forms/FormComponents";
 import FormTerrenoServicio from "./Forms/FormTerrenoServicio";
+import { useNavigate } from "react-router-dom";
 
 export const SolicitudCreate = () => {
 
@@ -113,6 +114,8 @@ export const SolicitudCreate = () => {
 
     const [openDialogSuccess, setOpenDialogSuccess] = useState(false)
 
+    const navigateTo = useNavigate()
+
     // Alert de error
     const [viewAlert, setViewAlert] = useState<{
         open: boolean,
@@ -136,7 +139,10 @@ export const SolicitudCreate = () => {
                 onClose={viewAlert.onClose}
             />
 
-            <Dialog open={openDialogSuccess} onClose={() => setOpenDialogSuccess(false)} maxWidth='md' fullWidth className="modal-dialog">
+            <Dialog open={openDialogSuccess} onClose={() => {
+                setOpenDialogSuccess(false)
+                navigateTo('/requests')
+            }} maxWidth='md' fullWidth className="modal-dialog">
                 <DialogContent className="modal-principal">
 
                     <Grid container justifyContent={'space-evenly'}>
@@ -239,6 +245,7 @@ export const SolicitudCreate = () => {
                             <Button variant="contained" className="modal-principal-button-success" onClick={
                                 () => {
                                     setOpenDialogSuccess(false)
+                                    navigateTo('/requests')
                                 }
                             }>
                                 Aceptar

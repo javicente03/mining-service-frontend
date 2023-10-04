@@ -10,6 +10,7 @@ import icon_solicitudes from '../../assets/img/icon-solicitudes.png';
 import icon_settings from '../../assets/img/icon-settings.png';
 import icon_logout from '../../assets/img/icon-logout.png';
 import icon_perfil from '../../assets/img/icon-perfil.png';
+import icon_companies from '../../assets/img/icon-companies.png';
 import icon_requests from '../../assets/img/icon-requests.png';
 import icon_insumos from '../../assets/img/icon-insumos.png';
 import icon_ots_create from '../../assets/img/icon-ots-create.png';
@@ -36,6 +37,7 @@ export const SidebarAdmin = () => {
             name: 'Empresas',
             link: '/admin/companies',
             icon: <Business />,
+            iconImg: icon_companies,
             now: currentPath === '/admin/companies', 
         },
         {

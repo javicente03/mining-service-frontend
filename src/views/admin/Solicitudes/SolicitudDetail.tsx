@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { Fragment, useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { GetRequestsAdminById } from "../../../helpers/admin/requests";
 import icon_worker from "../../../assets/img/ast-03.png";
 import mutatorRequestParam from "../../../utils/mutatorRequestParam";
@@ -113,6 +113,8 @@ export const SolicitudDetailAdmin = () => {
         open: boolean,
         url: string
     }>({ open: false, url: '' });
+
+    const navigateTo = useNavigate();
 
     // Alert de error
     const [ viewAlert, setViewAlert ] = useState<{
@@ -264,7 +266,10 @@ export const SolicitudDetailAdmin = () => {
                 </DialogContent>
             </Dialog>
 
-            <Dialog open={openDialogSuccess} onClose={() => setOpenDialogSuccess(false)} maxWidth='xs' fullWidth className="modal-dialog">
+            <Dialog open={openDialogSuccess} onClose={() => {
+                setOpenDialogSuccess(false);
+                navigateTo('/admin/requests');
+            }} maxWidth='xs' fullWidth className="modal-dialog">
                 <DialogContent className="modal-principal">
 
                     <Grid container justifyContent={'center'}>
@@ -308,7 +313,7 @@ export const SolicitudDetailAdmin = () => {
                                     width: { xs: '100%', sm: '300px'}
                                 }}
                                 >
-                                    Crear Orden de Trabajo
+                                    Crear Cotización
                                 </Button>
                             </Link>
                         </Grid>
@@ -317,7 +322,10 @@ export const SolicitudDetailAdmin = () => {
                 </DialogContent>
             </Dialog>
 
-            <Dialog open={openDialogError} onClose={() => setOpenDialogError(false)} maxWidth='xs' fullWidth className="modal-dialog">
+            <Dialog open={openDialogError} onClose={() => {
+                setOpenDialogError(false);
+                navigateTo('/admin/requests');
+            }} maxWidth='xs' fullWidth className="modal-dialog">
                 <DialogContent className="modal-principal">
 
                     <Grid container justifyContent={'center'}>
@@ -348,6 +356,7 @@ export const SolicitudDetailAdmin = () => {
                             <Button variant="contained" className="modal-principal-button-success" onClick={
                                 () => {
                                     setOpenDialogError(false)
+                                    navigateTo('/admin/requests');
                                 }
                             }
                             >

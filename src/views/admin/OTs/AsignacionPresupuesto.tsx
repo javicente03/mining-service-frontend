@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react"
 import { Grid, Button, Typography, Checkbox, FormControlLabel, FormGroup, FormControl, InputLabel, TextField, MenuItem, Select, AlertColor, Dialog, DialogContent, Divider } from "@mui/material"
 import { useQuery } from "@tanstack/react-query"
 import { GetOTByIdAdmin } from "../../../helpers/admin/ots"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { formatAmount } from "../../../helpers/formatAmount"
 import FormPresupuestoApproved from "./Forms/FormPresupuestoApproved"
 import FormPresupuestoRejected from "./Forms/FormPresupuestoRejected"
@@ -94,10 +94,6 @@ export const AsignacionPresupuesto = () => {
         return ret;
     }
 
-    useEffect(() => {
-        console.log(data)
-    }, [data])
-
     const senBudget = mutatorRequest('/admin/ots/send-budget/'+id, 'POST', {
         ...data,
         informe_tecnico: data.informe_tecnico.trim(),
@@ -122,6 +118,8 @@ export const AsignacionPresupuesto = () => {
 
     const [ openDialogSuccess, setOpenDialogSuccess ] = useState<boolean>(false);
 
+    const navigateTo = useNavigate();
+
     // Alert de error
     const [ viewAlert, setViewAlert ] = useState<{
         open: boolean,
@@ -138,7 +136,10 @@ export const AsignacionPresupuesto = () => {
     return (
         <Fragment>
 
-            <Dialog open={openDialogSuccess} onClose={() => setOpenDialogSuccess(false)} maxWidth='xs' fullWidth className="modal-dialog">
+            <Dialog open={openDialogSuccess} onClose={() => {
+                setOpenDialogSuccess(false)
+                navigateTo('/admin/ots')
+            }} maxWidth='xs' fullWidth className="modal-dialog">
                 <DialogContent className="modal-principal">
 
                     <Grid container justifyContent={'center'}>
@@ -167,6 +168,7 @@ export const AsignacionPresupuesto = () => {
                             <Button variant="contained" className="modal-principal-button-success" onClick={
                                 () => {
                                     setOpenDialogSuccess(false)
+                                    navigateTo('/admin/ots')
                                 }
                             }>
                                 Aceptar

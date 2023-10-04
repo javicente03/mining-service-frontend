@@ -98,7 +98,7 @@ export const UpdateUser = () => {
         })
     }
 
-    const [openDialogSuccess, setOpenDialogSuccess] = useState(false);
+    const [openDialogSuccess, setOpenDialogSuccess] = useState(true);
 
     const updateUser = mutatorRequest('/admin/users/update/'+id, 'PUT', {
         ...data,
@@ -155,7 +155,7 @@ export const UpdateUser = () => {
             />
 
             <ModalSuccessGenerico openDialogSuccess={openDialogSuccess} setOpenDialogSuccess={setOpenDialogSuccess}
-                title={'Usuario Actualizado'}
+                title={'Usuario Actualizado'} returnTo={'/admin/users'}
             />
             
             <Grid container border={'2px solid #f78f15'} style={{ borderRadius: '10px', padding: '10px' }}>

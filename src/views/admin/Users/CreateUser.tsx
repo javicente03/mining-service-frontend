@@ -150,6 +150,7 @@ export const CreateUser = () => {
 
             <ModalSuccessGenerico openDialogSuccess={openDialogSuccess} setOpenDialogSuccess={setOpenDialogSuccess}
                 title={'Usuario creado correctamente'} subtitle={'El usuario podrá iniciar sesión con las credenciales ingresadas'}
+                returnTo={'/admin/users'}
             />
             
             <Grid container border={'2px solid #f78f15'} style={{ borderRadius: '10px', padding: '10px' }}>
