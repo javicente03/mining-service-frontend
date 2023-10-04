@@ -98,7 +98,7 @@ export const UpdateUser = () => {
         })
     }
 
-    const [openDialogSuccess, setOpenDialogSuccess] = useState(true);
+    const [openDialogSuccess, setOpenDialogSuccess] = useState(false);
 
     const updateUser = mutatorRequest('/admin/users/update/'+id, 'PUT', {
         ...data,
