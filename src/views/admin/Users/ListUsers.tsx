@@ -68,28 +68,19 @@ export const ListUsers = () => {
     return (
         <Fragment>
             <Grid container border={'2px solid #f78f15'} style={{ borderRadius: '10px', padding: '10px' }} spacing={2}>
-                <Grid item xs={12} p={2}>
-                    <Button variant='contained' sx={{
-                        backgroundColor: 'transparent', color: '#f4ae33', border: '1px solid #272936',
-                        textTransform: 'capitalize', fontWeight: 'bold',
-                        ":disabled": { backgroundColor: 'transparent', color: '#f4ae33' },
-                    }} disabled>
-                        Usuarios
-                    </Button>
-                </Grid>
 
                 <Grid item xs={12}>
-                    <Link to='/admin/users/create' style={{
+                    {/* <Link to='/admin/users/create' style={{
                         textDecoration: 'none'
-                    }}>
+                    }}> */}
                         <Button variant='contained' sx={{
                             backgroundColor: '#272936', color: '#fff', marginTop: '10px', display: 'block',
                             textTransform: 'capitalize',
-                            ":hover": { backgroundColor: '#272936', color: '#fff' },
-                        }}>
-                            Crear usuario
+                            ":disabled": { backgroundColor: '#272936', color: '#fff' },
+                        }} disabled>
+                            Administrador de Perfiles
                         </Button>
-                    </Link>
+                    {/* </Link> */}
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={3}>
@@ -136,7 +127,11 @@ export const ListUsers = () => {
                     </FormGroup>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid item xs={12} sm={6} md={3} sx={{
+                    // Colocar contenido a la izquierda abajo
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                }}>
                     <FormControl fullWidth>
                         <Typography sx={{
                             fontSize: '12px', color: '#000', fontWeight: 'bold'
@@ -150,11 +145,30 @@ export const ListUsers = () => {
                             value={filters.role}
                             onChange={ (e) => { setFilters({...filters, role: e.target.value as string}) } }
                         >
-                            <MenuItem value={'user'}>Usuario</MenuItem>
+                            <MenuItem value={'technical'}>Técnico</MenuItem>
                             <MenuItem value={'admin'}>Administrador</MenuItem>
-                            <MenuItem value={'gestor'}>Gestor</MenuItem>
+                            <MenuItem value={'gestor'}>Supervisor</MenuItem>
+                            <MenuItem value={'user'}>Cliente</MenuItem>
                         </Select>
                     </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={6} md={3} sx={{
+                    // Colocar contenido a la izquierda abajo
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                }}>
+                    <Link to='/admin/users/create' style={{
+                        textDecoration: 'none'
+                    }}>
+                        <Button variant='contained' sx={{
+                            backgroundColor: '#272936', color: '#fff', marginTop: '10px', display: 'block',
+                            textTransform: 'capitalize',
+                            ":hover": { backgroundColor: '#272936', color: '#fff' },
+                        }}>
+                            Crear Perfil
+                        </Button>
+                    </Link>
                 </Grid>
 
                 <Grid item xs={12} mt={2} sx={{
@@ -172,25 +186,25 @@ export const ListUsers = () => {
                         }} className='table-head'>
                             <TableRow>
                                 <TableCell>
-                                    Nombre
+                                    N° Perfil
                                 </TableCell>
                                 <TableCell>
-                                    Rut
+                                    Nombre
                                 </TableCell>
+                                {/* <TableCell>
+                                    Rut
+                                </TableCell> */}
                                 <TableCell>
                                     Email
                                 </TableCell>
-                                <TableCell>
+                                {/* <TableCell>
                                     Razón Social
                                 </TableCell>
                                 <TableCell>
                                     Rol
-                                </TableCell>
+                                </TableCell> */}
                                 <TableCell>
                                     Cargo
-                                </TableCell>
-                                <TableCell>
-                                    Imágen
                                 </TableCell>
                                 <TableCell>
                                     Teléfono
@@ -198,9 +212,9 @@ export const ListUsers = () => {
                                 <TableCell>
                                     Estado
                                 </TableCell>
-                                <TableCell>
+                                {/* <TableCell>
                                     Fecha de creación
-                                </TableCell>
+                                </TableCell> */}
                                 <TableCell>
                                     Acciones
                                 </TableCell>
@@ -212,40 +226,49 @@ export const ListUsers = () => {
                                     <Fragment key={index}>
                                         <TableRow>
                                             <TableCell>
-                                                {item?.name} {item?.lastname}
+                                                {item?.id}
                                             </TableCell>
-                                            <TableCell>
-                                                {formatRut(item?.rut)}
-                                            </TableCell>
-                                            <TableCell>
-                                                {item?.email}
-                                            </TableCell>
-                                            <TableCell>
-                                                {item?.company?.razon_social}
-                                            </TableCell>
-                                            <TableCell>
-                                                {formatRole(item?.role)}
-                                            </TableCell>
-                                            <TableCell>
-                                                {item?.cargo}
-                                            </TableCell>
-                                            <TableCell>
+                                            <TableCell sx={{
+                                                fontWeight: 'bold', textAlign: 'left !important'
+                                            }}>
                                                 {
                                                     item.thumbnail ? (
                                                         <img src={item.thumbnail} alt={item?.name} 
-                                                            style={{ width: '30px', height: '30px', borderRadius: '50%',
+                                                            style={{ width: '35px', height: '35px', borderRadius: '5px',
                                                                 display: 'inline-flex', verticalAlign: 'middle', marginRight: '5px'
                                                             }} />
                                                     ) : (
                                                         <Avatar 
                                                             sx={{
                                                                 backgroundColor: '#272936',
+                                                                borderRadius: '5px',
                                                                 color: '#fff', display: 'inline-flex',
-                                                                width: '30px', height: '30px', verticalAlign: 'middle', marginRight: '5px'
+                                                                width: '35px', height: '35px', verticalAlign: 'middle', marginRight: '5px'
                                                             }}
                                                         />
                                                     )
                                                 }
+                                                {item?.name} {item?.lastname}
+                                            </TableCell>
+                                            {/* <TableCell>
+                                                {formatRut(item?.rut)}
+                                            </TableCell> */}
+                                            <TableCell>
+                                                <a style={{
+                                                    textDecoration: 'none',
+                                                    color: '#70a9e2',
+                                                }}>
+                                                    {item?.email}
+                                                </a>
+                                            </TableCell>
+                                            {/* <TableCell>
+                                                {item?.company?.razon_social}
+                                            </TableCell>
+                                            <TableCell>
+                                                {formatRole(item?.role)}
+                                            </TableCell> */}
+                                            <TableCell>
+                                                {item?.cargo}
                                             </TableCell>
                                             <TableCell>
                                                 {item?.phone}
@@ -253,7 +276,7 @@ export const ListUsers = () => {
                                             <TableCell>
                                                 {formatStatus(item.active)}
                                             </TableCell>
-                                            <TableCell sx={{
+                                            {/* <TableCell sx={{
                                                 textTransform: 'capitalize'
                                             }}>
                                                 {
@@ -261,7 +284,7 @@ export const ListUsers = () => {
                                                     // en español
                                                     format(new Date(item.createdAt), 'dd MMM yyyy', { locale: es })
                                                 }
-                                            </TableCell>
+                                            </TableCell> */}
                                             <TableCell>
                                                 <Link to={`/admin/users/update/${item.id}`} style={{
                                                     textDecoration: 'none'
@@ -286,7 +309,7 @@ export const ListUsers = () => {
                             {
                                 users.data?.data?.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={11}>
+                                        <TableCell colSpan={8}>
                                             <Typography variant='h6' align='center'>
                                                 No hay usuarios
                                             </Typography>

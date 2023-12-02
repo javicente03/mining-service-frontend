@@ -7,12 +7,27 @@ declare namespace Models {
         description: string
         createdAt: string
         type_work: string
+        date_begin?: string
+        date_end?: string
         tipos_trabajos_solicitud: {
             description: string
             tipoTrabajoId: number
             tipoTrabajo: {
                 name: string
             }
+        }[],
+        tecnicos_ot?: {
+            user: {
+                name: string
+                lastname: string
+                email: string
+                rut: string
+                id: number
+                thumbnail: string | null
+            },
+            id: number
+            userId: number
+            otId: number
         }[],
         servicio_terreno_solicitud: {
             description: string

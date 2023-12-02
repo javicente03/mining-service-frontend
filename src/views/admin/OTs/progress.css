@@ -40,3 +40,107 @@
     width: 30px;
     height: 30px;
 }
+
+.btn-tab-disabled {
+    background-color: #272936 !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    text-transform: capitalize !important;
+    border-radius: 0px !important;
+    border: 1px solid #fff !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+.btn-tab-disabled:hover {
+    background-color: #272936 !important;
+    color: #fff !important;
+}
+
+.btn-tab-active {
+    background-color: #f78f15 !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    text-transform: capitalize !important;
+    border-radius: 0px !important;
+    border: 1px solid #fff !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+.btn-tab-active, .btn-tab-disabled {
+    /* Sombrear abajo y a la derecha */
+    box-shadow: 4px 4px 8px #888888;
+}
+
+/* Hacer que btn-tab-active tenga una flecha apuntando abajo */
+.btn-tab-active:after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    margin-left: -10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: #f78f15 transparent transparent transparent;
+}
+
+.progress-activity {
+    border: white 1px solid;
+    border-radius: 10px;
+    width: 100px;
+    text-align: center;
+    font-size: 12px;
+    position: relative;
+}
+
+.progress-activity-bar {
+    background-color: #fff;
+    height: 100%;
+    /* Centrar verticalmente */
+    display: flex;
+    align-items: center;
+    /* Centrar horizontalmente */
+    justify-content: center;
+}
+
+.percentage-activity {
+    position: absolute;
+    top: 0;
+    left: 40%;
+    color: #272936;
+}
+
+.input-blank {
+    background-color: #fff;
+    border-radius: 0 !important;
+    border: #f78f15 1px solid !important;
+    outline: none !important;
+    width: 150px !important;
+}
+
+.input-blank input {
+    padding: 5px 5px !important;
+    text-align: center !important;
+    width: 25px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+}
+
+.input-blank span {
+    font-size: 12px !important;
+    font-weight: bold !important;
+}
+
+.input-blank div {
+    border-radius: 0 !important;
+}
+
+@media (max-width: 899) {
+    .btn-tab-disabled {
+        border-top: 1px solid #fff !important;
+        border-bottom: 1px solid #fff !important;
+        border-left: none !important;
+        border-right: none !important;
+    }
+}

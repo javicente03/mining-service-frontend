@@ -191,7 +191,9 @@ export const OTsListAdmin = () => {
                                                 {format(new Date(item.createdAt), 'dd MMM yyyy', { locale: es })}
                                             </TableCell>
                                             <TableCell>
-                                                <Link to={'/admin/ots/budget/'+item.id}>
+                                                <Link to={
+                                                    ['in_process'].includes(item.status_ot || 'pending') ? `/admin/ots/setting/${item.id}` : `/admin/ots/budget/${item.id}`
+                                                }>
                                                     <button style={{
                                                         backgroundColor: '#272936',
                                                         color: '#fff',

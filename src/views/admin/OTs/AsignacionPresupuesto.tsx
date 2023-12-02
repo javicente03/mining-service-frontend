@@ -29,9 +29,6 @@ export const AsignacionPresupuesto = () => {
 
     useEffect(() => {
         if (request.data?.data && request.data?.data?.presupuestoOt) {
-            console.log(request.data?.data?.presupuestoOt.evaluacion)
-            console.log(request.data?.data?.presupuestoOt.desarme_evaluacion)
-            console.log(request.data?.data?.presupuestoOt.lavado)
             setData({
                 ...data,
                 date: request.data?.data?.presupuestoOt?.date?.split('T')[0] || '',
@@ -44,7 +41,6 @@ export const AsignacionPresupuesto = () => {
                 motivo: request.data?.data?.presupuestoOt?.motivo_rechazo,
                 tipo_componenteId: request.data?.data?.presupuestoOt?.tipo_componenteId,
             })
-            console.log('entro aqui')
         }
     }, [request.data])
 
@@ -73,6 +69,17 @@ export const AsignacionPresupuesto = () => {
                     Aprobada
                 </Typography>
                 break;
+            case 'in_process':
+                ret = <Typography className="status-orange" sx={{
+                    border: '#cecece 1px solid', marginLeft: {
+                        xs: '0', sm: '10px'
+                    }, marginTop: '10px', display: {
+                        xs: 'block', sm: 'inline-block'
+                    }
+                }}>
+                    En Proceso
+                </Typography>
+                break;
             case 'rejected':
                 ret = <Typography className="status-red" sx={{
                     border: '#cecece 1px solid', marginLeft: {
@@ -84,8 +91,15 @@ export const AsignacionPresupuesto = () => {
                     Rechazada
                 </Typography>
                 break;
+            // case 
             default:
-                ret = <Typography>
+                ret = <Typography className="status-blue" sx={{
+                    border: '#cecece 1px solid', marginLeft: {
+                        xs: '0', sm: '10px'
+                    }, marginTop: '10px', display: {
+                        xs: 'block', sm: 'inline-block'
+                    }
+                }}>
                     Pendiente
                 </Typography>
                 break;
@@ -233,119 +247,133 @@ export const AsignacionPresupuesto = () => {
                         Presupuesto
                     </Button>
                 </Grid>
-
-                <Grid item xs={12} md={
-                    data.status === 'approved' ? 8 : 6
-                } m='0 auto'>
-                    <Grid container mt={2}>
-                        {
-                            data.status === 'approved' &&
-                                <FormPresupuestoApproved data={data} setData={setData} />
-                        }
+                
+                {
+                    request.data?.data?.status_ot !== 'in_process' ?
                         <Grid item xs={12} md={
-                            data.status === 'approved' ? 6 : 12
-                        } sx={{
-                            borderLeft: {
-                                // El borde debe ser algo difuminado
-                                xs: 'none', md: data.status === 'approved' ? '1px solid #c7c7c7' : 'none'
-                            }, borderTop: {
-                                xs: '1px solid #c7c7c7', md: 'none'
-                            }, padding: '5px', paddingLeft: {
-                                xs: '0', md: '20px'
-                            }, paddingTop: {
-                                xs: '20px', md: '0'
-                            }
-                        }}>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                        <Select
-                                            className={`input-text-principal select-input-text-secondary ${data.status === 'approved' ? 'green' : 'red'}`}
-                                            name='type_component'
-                                            value={data.status}
-                                            onChange={(e) => setData({ ...data, status: e.target.value as string })}
-                                        >
-                                            <MenuItem sx={{
-                                                color: '#37cb77'
-                                            }} value={'approved'}>Aprobar</MenuItem>
-                                            <MenuItem sx={{
-                                                color: '#fb6065'
-                                            }} value={'rejected'}>Rechazar</MenuItem>
-                                        </Select>
-                                    </FormControl>
+                            data.status === 'approved' ? 8 : 6
+                        } m='0 auto'>
+                            <Grid container mt={2}>
+                                {
+                                    data.status === 'approved' &&
+                                        <FormPresupuestoApproved data={data} setData={setData} />
+                                }
+                                <Grid item xs={12} md={
+                                    data.status === 'approved' ? 6 : 12
+                                } sx={{
+                                    borderLeft: {
+                                        // El borde debe ser algo difuminado
+                                        xs: 'none', md: data.status === 'approved' ? '1px solid #c7c7c7' : 'none'
+                                    }, borderTop: {
+                                        xs: '1px solid #c7c7c7', md: 'none'
+                                    }, padding: '5px', paddingLeft: {
+                                        xs: '0', md: '20px'
+                                    }, paddingTop: {
+                                        xs: '20px', md: '0'
+                                    }
+                                }}>
+                                    <Grid container>
+                                        <Grid item xs={12}>
+                                            <FormControl fullWidth>
+                                                <Select
+                                                    className={`input-text-principal select-input-text-secondary ${data.status === 'approved' ? 'green' : 'red'}`}
+                                                    name='type_component'
+                                                    value={data.status}
+                                                    onChange={(e) => setData({ ...data, status: e.target.value as string })}
+                                                >
+                                                    <MenuItem sx={{
+                                                        color: '#37cb77'
+                                                    }} value={'approved'}>Aprobar</MenuItem>
+                                                    <MenuItem sx={{
+                                                        color: '#fb6065'
+                                                    }} value={'rejected'}>Rechazar</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+
+                                        {
+                                            data.status === 'approved' &&
+                                                <Grid item xs={12} mt={2}>
+                                                    <FormControl fullWidth>
+                                                        <Typography sx={{
+                                                            fontSize: '12px', color: '#000', fontWeight: 'bold'
+                                                        }}>
+                                                            Asignar Fecha
+                                                        </Typography>
+                                                        <input type="date" className="input-text-principal" style={{
+                                                            backgroundColor: '#fff', color: '#000', padding: '20px 10px', borderRadius: '5px', marginTop: '5px'
+                                                        }} 
+                                                            // No permitir fechas anteriores a la actual
+                                                            min={new Date().toISOString().split('T')[0]}
+                                                            value={data.date}
+                                                            onChange={(e) => setData({ ...data, date: e.target.value })}
+                                                        />
+                                                    </FormControl>
+                                                </Grid>
+                                        }
+
+                                        {
+                                            data.status === 'rejected' &&
+                                                <FormPresupuestoRejected data={data} setData={setData} request={request} />
+                                        }
+                                    </Grid>
                                 </Grid>
 
                                 {
                                     data.status === 'approved' &&
                                         <Grid item xs={12} mt={2}>
-                                            <FormControl fullWidth>
-                                                <Typography sx={{
-                                                    fontSize: '12px', color: '#000', fontWeight: 'bold'
-                                                }}>
-                                                    Asignar Fecha
-                                                </Typography>
-                                                <input type="date" className="input-text-principal" style={{
-                                                    backgroundColor: '#fff', color: '#000', padding: '20px 10px', borderRadius: '5px', marginTop: '5px'
-                                                }} 
-                                                    // No permitir fechas anteriores a la actual
-                                                    min={new Date().toISOString().split('T')[0]}
-                                                    value={data.date}
-                                                    onChange={(e) => setData({ ...data, date: e.target.value })}
-                                                />
-                                            </FormControl>
+                                            <Grid container justifyContent={'center'}>
+                                                <Grid item xs={12} md={6} lg={4} textAlign='center'>
+                                                    <FormControl>
+                                                        <Typography sx={{
+                                                            fontSize: '12px', color: '#000', fontWeight: 'bold', marginTop: '10px', textAlign: 'center'
+                                                        }}>
+                                                            Precio
+                                                        </Typography>
+                                                        <TextField 
+                                                            className="input-text-principal no-border text-center"
+                                                            value={formatAmount(data.cost) || 0}
+                                                            onChange={(e) => {
+                                                                // Limpiar el valor de los puntos y el signo $
+                                                                let value = e.target.value.replace(/\$|\.|\s/g, '')
+                                                                // Si el valor no es un número, no hacer nada
+                                                                console.log(value)
+                                                                // Si el valor es empty string mandar 0
+                                                                if (value === '') {
+                                                                    setData({...data, cost: 0 })
+                                                                }
+                                                                if (isNaN(parseInt(value))) return;
+                                                                // Setear el valor
+                                                                setData({ ...data, cost: parseInt(value) })
+                                                            }}
+                                                        />
+                                                        <Button sx={{ backgroundColor: '#272936', color: '#fff', marginTop: '10px', display: 'block', width: '100%',
+                                                            ":hover": { backgroundColor: '#272936', color: '#fff' },
+                                                        }}
+                                                            onClick={() => senBudget.mutate()}
+                                                            disabled={senBudget.isLoading}
+                                                        >
+                                                            Aceptar
+                                                        </Button>
+                                                    </FormControl>
+                                                </Grid>
+                                            </Grid>
                                         </Grid>
                                 }
-
-                                {
-                                    data.status === 'rejected' &&
-                                        <FormPresupuestoRejected data={data} setData={setData} request={request} />
-                                }
-                            </Grid>
+                            </Grid>    
                         </Grid>
-
-                        {
-                            data.status === 'approved' &&
-                                <Grid item xs={12} mt={2}>
-                                    <Grid container justifyContent={'center'}>
-                                        <Grid item xs={12} md={6} lg={4} textAlign='center'>
-                                            <FormControl>
-                                                <Typography sx={{
-                                                    fontSize: '12px', color: '#000', fontWeight: 'bold', marginTop: '10px', textAlign: 'center'
-                                                }}>
-                                                    Precio
-                                                </Typography>
-                                                <TextField 
-                                                    className="input-text-principal no-border text-center"
-                                                    value={formatAmount(data.cost) || 0}
-                                                    onChange={(e) => {
-                                                        // Limpiar el valor de los puntos y el signo $
-                                                        let value = e.target.value.replace(/\$|\.|\s/g, '')
-                                                        // Si el valor no es un número, no hacer nada
-                                                        console.log(value)
-                                                        // Si el valor es empty string mandar 0
-                                                        if (value === '') {
-                                                            setData({...data, cost: 0 })
-                                                        }
-                                                        if (isNaN(parseInt(value))) return;
-                                                        // Setear el valor
-                                                        setData({ ...data, cost: parseInt(value) })
-                                                    }}
-                                                />
-                                                <Button sx={{ backgroundColor: '#272936', color: '#fff', marginTop: '10px', display: 'block', width: '100%',
-                                                    ":hover": { backgroundColor: '#272936', color: '#fff' },
-                                                }}
-                                                    onClick={() => senBudget.mutate()}
-                                                    disabled={senBudget.isLoading}
-                                                >
-                                                    Aceptar
-                                                </Button>
-                                            </FormControl>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                        }
-                    </Grid>    
-                </Grid>
+                    :
+                    <Fragment>
+                        {/* Un mensaje sobre que ya se asigno un presupuesto */}
+                        <Grid item xs={12} textAlign='center' mt={3}>
+                            <Typography sx={{
+                                fontSize: '16px', color: '#000', fontWeight: 'bold'
+                            }}>
+                                Ya se asignó un presupuesto a esta orden de trabajo
+                            </Typography>
+                        </Grid>
+                    </Fragment>
+                }
             </Grid>
 
         </Fragment>

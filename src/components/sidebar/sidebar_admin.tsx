@@ -56,10 +56,10 @@ export const SidebarAdmin = () => {
         },
         {
             name: 'Insumos',
-            link: '/admin/supplies',
+            link: '/admin/insumos',
             icon: <StackedLineChart />,
             iconImg: icon_insumos,
-            now: currentPath === '/admin/supplies',
+            now: currentPath === '/admin/insumos',
         },
         {
             name: 'Solicitudes de clientes',
