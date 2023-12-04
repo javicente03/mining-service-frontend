@@ -1,17 +1,20 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { Fragment, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { GetOTByIdAdmin } from "../../../helpers/admin/ots";
 import ActivitiesAdminOT from "./settingsScreen/ActivitiesAdminOTScreen";
+import InsumosAdminOT from "./settingsScreen/InsumosAdminOTScreen";
+import PresupuestosAddAdminOTScreen from "./settingsScreen/PresupuestosAddAdminOTScreen";
 import TecnicosAdminOT from "./settingsScreen/TecnicosAdminOTScreen";
+import TrabajosExternosAdminOt from "./settingsScreen/TrabajosExternosAdminOtScreen";
 
 export const OTSettings = () => {
 
     const { id } = useParams<{ id: string }>();
     const ot = useQuery(['GetOTByIdAdmin', id], () => GetOTByIdAdmin(id));
 
-    const [screen, setScreen] = useState<null | 'technical' | 'activities' | 'supplies' | 'externaljobs'>('technical');
+    const [screen, setScreen] = useState<null | 'technical' | 'activities' | 'supplies' | 'externaljobs' | 'budget_add'>('technical');
 
     return (
         <Fragment>
@@ -38,6 +41,22 @@ export const OTSettings = () => {
                         Aprobada
                     </Typography>
                 </Grid>
+
+                {
+                    !ot.data?.data?.isChild &&
+                        <Grid item xs={12} mt={2} mb={2}>
+                            <Link to={`/admin/ots/${id}/newbudget`} style={{
+                                textDecoration: 'none'
+                            }}>
+                                <Button sx={{
+                                    backgroundColor: '#272936', color: '#fff', marginTop: '10px', display: 'block', textTransform: 'capitalize',
+                                    ":hover": { backgroundColor: '#272936', color: '#fff' },
+                                }}>
+                                    Generar Nuevo Presupuesto
+                                </Button>
+                            </Link>
+                        </Grid>
+                }
 
                 <Grid item xs={12} md={3} lg={2} display={{
                     xs: 'none', md: 'block'
@@ -67,6 +86,17 @@ export const OTSettings = () => {
                         Trabajos Externos
                     </Button>
                 </Grid>
+
+                {
+                    !ot.data?.data?.isChild &&
+                        <Grid item xs={12} md={3} lg={2} display={{
+                            xs: 'none', md: 'block'
+                        }}>
+                            <Button fullWidth className={screen === 'budget_add' ? "btn-tab-active" : "btn-tab-disabled"} onClick={() => setScreen('budget_add')}>
+                                Presupuestos Adicionales
+                            </Button>
+                        </Grid>
+                }
 
                 <Grid item xs={12} mt={2}></Grid>
                 <Grid item xs={12} display={{
@@ -109,6 +139,11 @@ export const OTSettings = () => {
                     </Button>
                 </Grid>
 
+                {
+                    screen === 'supplies' &&
+                        <InsumosAdminOT ot={ot} />   
+                }
+
                 <Grid item xs={12} display={{
                     xs: 'block', md: 'none'
                 }} mb={2}>
@@ -118,6 +153,32 @@ export const OTSettings = () => {
                         Trabajos Externos
                     </Button>
                 </Grid>
+
+                {
+                    screen === 'externaljobs' &&
+                        <TrabajosExternosAdminOt ot={ot} />
+                }
+
+                {
+                    !ot.data?.data?.isChild &&
+                        <Fragment>
+                            <Grid item xs={12} display={{
+                                xs: 'block', md: 'none'
+                            }} mb={2}>
+                                <Button fullWidth className={screen === 'budget_add' ? "btn-tab-active" : "btn-tab-disabled"} onClick={() => {
+                                    screen === 'budget_add' ? setScreen(null) : setScreen('budget_add')
+                                }}>
+                                    Presupuestos Adicionales
+                                </Button>
+                            </Grid>
+
+                            {
+                                screen === 'budget_add' &&
+                                    <PresupuestosAddAdminOTScreen ot={ot} />
+                            }
+                        </Fragment>
+                }
+
 
             </Grid>
 

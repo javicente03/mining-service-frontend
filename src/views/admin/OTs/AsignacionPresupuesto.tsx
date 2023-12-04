@@ -9,6 +9,8 @@ import FormPresupuestoRejected from "./Forms/FormPresupuestoRejected"
 import { SnakbarAlert } from "../../../components/snakbar/snakbarAlert"
 import icon_worker from "../../../assets/img/ast-03.png";
 import mutatorRequest from "../../../utils/mutatorRequest"
+import mutatorRequestParam from "../../../utils/mutatorRequestParam"
+import ModalSuccessGenerico from "../../../components/modals/ModalSuccessGenerico"
 
 export const AsignacionPresupuesto = () => {
 
@@ -130,6 +132,36 @@ export const AsignacionPresupuesto = () => {
         }
     }, [senBudget.isSuccess, senBudget.isError])
 
+    const [ dataBudget, setDataBudget ] = useState<{
+        motivo_rechazo: string,
+    }>({ motivo_rechazo: '' });
+
+    const attendRequest = mutatorRequestParam('/admin/ots/accept-budget/'+id, 'PUT');
+
+    const [ openDialogAccept, setOpenDialogAccept ] = useState<boolean>(false);
+    const [ openDialogReject, setOpenDialogReject ] = useState<boolean>(false);
+    useEffect(() => {
+        if (attendRequest.isSuccess) {
+            request.refetch();
+            if (attendRequest.data?.data?.status === 'approved') {
+                setOpenDialogAccept(true);
+            }
+            if (attendRequest.data?.data?.status === 'rejected') {
+                setOpenDialogReject(true);
+            }
+        }
+
+        if (attendRequest.isError) {
+            setViewAlert({
+                open: true,
+                // @ts-ignore
+                message: attendRequest.error.response.data.error || 'Error al atender la solicitud',
+                color: 'error',
+                onClose: () => setViewAlert({ ...viewAlert, open: false })
+            });
+        }
+    }, [attendRequest.isSuccess, attendRequest.isError])
+
     const [ openDialogSuccess, setOpenDialogSuccess ] = useState<boolean>(false);
 
     const navigateTo = useNavigate();
@@ -149,6 +181,16 @@ export const AsignacionPresupuesto = () => {
 
     return (
         <Fragment>
+
+            <ModalSuccessGenerico 
+                openDialogSuccess={openDialogAccept} setOpenDialogSuccess={setOpenDialogAccept}
+                title="Presupuesto aceptado" subtitle="La orden de trabajo ha sido creada con éxito"
+            />
+
+            <ModalSuccessGenerico 
+                openDialogSuccess={openDialogReject} setOpenDialogSuccess={setOpenDialogReject}
+                title="Presupuesto rechazado" subtitle="Has rechazado el presupuesto y la solicitud ha sido cancelada"
+            />
 
             <Dialog open={openDialogSuccess} onClose={() => {
                 setOpenDialogSuccess(false)
@@ -359,6 +401,76 @@ export const AsignacionPresupuesto = () => {
                                                 </Grid>
                                             </Grid>
                                         </Grid>
+                                }
+
+                                {
+                                    request.data?.data?.status_ot === 'approved' && request.data?.data?.presupuestoOt &&
+                                        <Fragment>
+                                            <Grid item xs={12} mt={2}>
+                                                <Typography sx={{
+                                                    fontSize: '16px', color: '#272936', fontWeight: 'bold', textAlign: 'center'
+                                                }}>
+                                                    ¿El cliente aceptó el presupuesto?
+                                                </Typography>
+                                            </Grid>
+
+                                            <div style={{ width: '100%', marginTop: '10px', textAlign: 'center' }}>
+                                                <Button variant="contained"
+                                                    className="modal-principal-button-success"
+                                                    onClick={() => {
+                                                        attendRequest.mutate({ status: 'approved' });
+                                                    }} disabled={attendRequest.isLoading}
+                                                >
+                                                    Sí
+                                                </Button>
+
+                                                <Button variant="contained"
+                                                    className="modal-principal-button-error"
+                                                    disabled={
+                                                        dataBudget.motivo_rechazo.length === 0 || attendRequest.isLoading
+                                                    }
+                                                    sx={{
+                                                        ":disabled": { opacity: 0.5 },
+                                                        marginLeft: {
+                                                            xs: '0', sm: '10px'
+                                                        }, marginTop: {
+                                                            xs: '10px', sm: '0'
+                                                        }
+                                                    }}
+                                                    onClick={() => {
+                                                        attendRequest.mutate({ status: 'rejected', motivo_rechazo: dataBudget.motivo_rechazo });
+                                                    }}
+                                                >
+                                                    No
+                                                </Button>
+                                            </div>
+
+                                            <Grid item xs={12} sm={8} m='0 auto' mt={2}>
+                                                <Typography sx={{ fontWeight: 'bold', color: '#272936', textAlign: 'left' }}>
+                                                    Motivo de rechazo
+                                                </Typography>
+                                                <FormControl fullWidth>
+                                                    <TextField 
+                                                        multiline
+                                                        placeholder="Escribe aquí..."
+                                                        rows={4}
+                                                        className="input-text-principal"
+                                                        value={dataBudget.motivo_rechazo}
+                                                        onChange={(e) => {
+                                                            if (e.target.value.length <= 2500) {
+                                                                setDataBudget({
+                                                                    ...dataBudget,
+                                                                    motivo_rechazo: e.target.value
+                                                                })
+                                                            }
+                                                        }}
+                                                    />
+                                                    <span style={{ color: '#272936', fontSize: '10px', position: 'absolute', bottom: '10px', right: '10px' }}>
+                                                        {dataBudget.motivo_rechazo.length}/2500
+                                                    </span>
+                                                </FormControl>
+                                            </Grid>
+                                        </Fragment>
                                 }
                             </Grid>    
                         </Grid>

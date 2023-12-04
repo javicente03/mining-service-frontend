@@ -89,5 +89,86 @@ declare namespace Models {
             createdAt: string
             solicitudId: number
         }[],
+        insumos_ot?: {
+            id: number
+            otId: number
+            insumoId: number
+            cantidad: number
+            createdAt: string
+            insumo: {
+                id: number
+                title: string
+                description: string
+                modelo: string
+                marca: string
+                nro_componente: number
+                year: number
+                stock: number
+                image: string
+                deleted: boolean
+                createdAt: string
+            }
+        }[],
+        lubricantes_ot?: {
+            id: number
+            otId: number
+            code: string
+            lts: any
+            name: string
+        }[],
+        alistamiento_ot?: {
+            id: number
+            otId: number
+            code: string
+            name: string
+        }[],
+        isChild: boolean
+        ot_actividades_relation?: {
+            id: number
+            otId: number
+            actividadId: number
+            finished: boolean
+            deleted: boolean
+            createdAt: string
+            actividad: {
+                id: number
+                name: string
+                deleted: boolean
+                createdAt: string
+            }
+            otSubActividadesRelation: {
+                id: number
+                otActividadRelationId: number
+                subActividadId: number
+                horas_hombre: number
+                tiempo_real: number
+                varianza: number
+                finished: boolean
+                deleted: boolean
+                createdAt: string
+                subActividad: {
+                    id: number
+                    description: string
+                    horas_hombre: number
+                    deleted: boolean
+                    createdAt: string
+                    actividadId: number
+                }
+            }[]
+        }[]
+        tecnicos_ot: {
+            id: number
+            otId: number
+            userId: number
+            user: {
+                name: string
+                lastname: string
+                thumbnail: string | null
+                rut: string
+                email: string
+                cargo: string
+            }
+        }
+          
     }
 }

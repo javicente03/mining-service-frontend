@@ -17,3 +17,13 @@ export const GetOTByIdAdmin = async ( id: string = '0'
     const data = requestGet('/admin/ots/get/' + id);
     return data;
 }
+
+export const GetOTSChildrenAdmin = async (
+    id: string = '0', filters: any = null
+): Promise<{
+    data: Models.SolicitudGetModel[],
+    total: number
+}> => {
+    const data = requestGet('/admin/children/ots/get-children/' + id, filters);
+    return data;
+}

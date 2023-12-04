@@ -200,10 +200,10 @@ export default function ActivitiesAdminOT({
                                         }
 
                                         {
-                                            ot.data?.data && ot.data?.data?.tecnicos_ot?.length === 0 &&
+                                            actividades.data?.total === 0 &&
                                             <TableRow>
                                                 <TableCell colSpan={2} align='center'>
-                                                    No hay actividades asignadas
+                                                    No hay actividades para mostrar
                                                 </TableCell>
                                             </TableRow>
                                         }

@@ -49,7 +49,7 @@ export const OTsListAdmin = () => {
         return ret;
     }
 
-    const formatProcess = (process: number, status: string | null = '') => {
+    const formatProcess = (status: string | null = '', item: Models.SolicitudGetModel) => {
 
         let className_progress ='';
         switch (status) {
@@ -70,32 +70,41 @@ export const OTsListAdmin = () => {
                 break;
         }
 
+        // en item.ot_actividades_relation (array) viene otSubActividadesRelation (array), quiero contar cuantos hay en total
+        let total_activities = item.ot_actividades_relation?.reduce((a, b) => a + b.otSubActividadesRelation.length, 0);
+        // Ahora quiero contar cuantos estan completados, dentro de otSubActividadesRelation hay un campo llamado finished que es booleano
+        let total_activities_finished = item.ot_actividades_relation?.reduce((a, b) => a + b.otSubActividadesRelation.filter((item: any) => item.finished).length, 0);
+        // @ts-ignore
+        let porcentaje = (total_activities_finished * 100) / total_activities;
+        // Que no sea decimal
+        porcentaje = Math.round(porcentaje);
+        porcentaje = isNaN(porcentaje) ? 0 : porcentaje;
+
         return <Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Box sx={{ width: '50%', mr: 1 }}>
-                    <LinearProgress variant="determinate" value={process} className={`linearproccess ${className_progress}`} />
+                    <LinearProgress variant="determinate" value={porcentaje} className={`linearproccess ${className_progress}`} />
                 </Box>
                 <Box sx={{ minWidth: '50%', display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="body2" className={className_progress}>{process}%</Typography>
-                    <AvatarGroup total={24} sx={{
-                        width: '70%', marginLeft: {
-                            xs: '30px', md: '25px'
-                        }
-                    }} className='avatarProgress'
-                    >
-                            <Avatar alt="Remy Sharp" src='https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80' sx={{
-                                width: '30px', height: '30px'
-                            }} />
-                            <Avatar alt="Travis Howard" src='https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80' sx={{
-                                width: '30px', height: '30px'
-                            }} />
-                            <Avatar alt="Agnes Walker" src='https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80' sx={{
-                                width: '30px', height: '30px'
-                            }} />
-                            <Avatar alt="Trevor Henderson" src='https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80' sx={{
-                                width: '30px', height: '30px'
-                            }} />
-                    </AvatarGroup>
+                    <Typography variant="body2" className={className_progress}>{porcentaje}%</Typography>
+                    {
+                        item.tecnicos_ot && item.tecnicos_ot.length > 0 ? (
+                            <AvatarGroup total={item.tecnicos_ot.length} sx={{
+                                width: '70%', marginLeft: {
+                                    xs: '30px', md: '25px'
+                                }
+                            }} className='avatarProgress'
+                            >
+                                {
+                                    item.tecnicos_ot.slice(0, 4).map((item, index: number) => (
+                                        <Avatar alt={item.user?.name} src={item.user?.thumbnail || ''} sx={{
+                                            width: '30px', height: '30px'
+                                        }} key={index} />
+                                    ))
+                                }
+                            </AvatarGroup>
+                        ) : null
+                    }
                 </Box>
             </Box>
         </Fragment>
@@ -182,7 +191,7 @@ export const OTsListAdmin = () => {
                                                 </span>
                                             </TableCell>
                                             <TableCell>
-                                                {formatProcess(50, item.status_ot)}
+                                                {formatProcess(item.status_ot, item)}
                                             </TableCell>
                                             <TableCell>
                                                 {formatStatus(item.status_ot)}

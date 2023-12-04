@@ -16,6 +16,7 @@ import { CreateInsumo } from "../views/admin/Insumos/CreateInsumo";
 import { ListInsumos } from "../views/admin/Insumos/ListInsumos";
 import { UpdateInsumo } from "../views/admin/Insumos/UpdateInsumo";
 import { AsignacionPresupuesto } from "../views/admin/OTs/AsignacionPresupuesto";
+import { CreateOtChild } from "../views/admin/OTs/children/CreateOTChild";
 import { OTCreate } from "../views/admin/OTs/creacion/CreacionOt";
 import { OTsListAdmin } from "../views/admin/OTs/ListOts";
 import { OTSettings } from "../views/admin/OTs/OTSettings";
@@ -168,6 +169,10 @@ export const router = createBrowserRouter([
             {
                 path: "/admin/insumos/update/:id",
                 element: <UpdateInsumo />
+            },
+            {
+                path: "/admin/ots/:id/newbudget",
+                element: <CreateOtChild />
             }
         ]
     },
