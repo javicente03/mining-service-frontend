@@ -28,13 +28,13 @@ export const Sidebar = () => {
             iconImg: icon_home,
             now: currentPath === '/home' || currentPath === '/', 
         },
-        {
-            name: 'Dashboard',
-            link: '/dashboard',
-            icon: <StackedLineChart />,
-            iconImg: icon_dashboard,
-            now: currentPath === '/dashboard',
-        },
+        // {
+        //     name: 'Dashboard',
+        //     link: '/dashboard',
+        //     icon: <StackedLineChart />,
+        //     iconImg: icon_dashboard,
+        //     now: currentPath === '/dashboard',
+        // },
         {
             name: 'Listado de OTs',
             link: '/ots',
@@ -56,13 +56,13 @@ export const Sidebar = () => {
             iconImg: icon_solicitudes,
             now: currentPath === '/ot-details',
         },
-        {
-            name: 'Configuración',
-            link: '/settings',
-            icon: <Settings />,
-            iconImg: icon_settings,
-            now: currentPath === '/settings',
-        },
+        // {
+        //     name: 'Configuración',
+        //     link: '/settings',
+        //     icon: <Settings />,
+        //     iconImg: icon_settings,
+        //     now: currentPath === '/settings',
+        // },
         {
             name: 'Cerrar sesión',
             icon: <Logout />,

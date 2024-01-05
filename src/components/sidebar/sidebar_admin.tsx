@@ -47,13 +47,13 @@ export const SidebarAdmin = () => {
             iconImg: icon_perfil,
             now: currentPath === '/admin/users',
         },
-        {
-            name: 'Dashboard',
-            link: '/admin/dashboard',
-            icon: <StackedLineChart />,
-            iconImg: icon_dashboard,
-            now: currentPath === '/admin/dashboard',
-        },
+        // {
+        //     name: 'Dashboard',
+        //     link: '/admin/dashboard',
+        //     icon: <StackedLineChart />,
+        //     iconImg: icon_dashboard,
+        //     now: currentPath === '/admin/dashboard',
+        // },
         {
             name: 'Insumos',
             link: '/admin/insumos',
@@ -89,13 +89,13 @@ export const SidebarAdmin = () => {
             iconImg: icon_ots,
             now: currentPath === '/admin/ots',
         },
-        {
-            name: 'Configuración',
-            link: '/admin/settings',
-            icon: <Settings />,
-            iconImg: icon_settings,
-            now: currentPath === '/admin/settings',
-        },
+        // {
+        //     name: 'Configuración',
+        //     link: '/admin/settings',
+        //     icon: <Settings />,
+        //     iconImg: icon_settings,
+        //     now: currentPath === '/admin/settings',
+        // },
         {
             name: 'Cerrar sesión',
             icon: <Logout />,
