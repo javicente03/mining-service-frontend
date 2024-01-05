@@ -92,7 +92,7 @@ export const HomeAdmin = () => {
                     </Grid>
                 </Grid>
 
-                <Grid item xs={12} style={{
+                {/* <Grid item xs={12} style={{
                     boxShadow: 'rgba(0, 0, 0, 0.2) 4px 4px 3px 0px', borderRadius: '10px', backgroundColor: '#fff', paddingBottom: '40px'
                 }} mt={4}>
                     <Typography fontSize={'14px'} style={{color: '#369fe8', fontSize: '16px'}}>
@@ -122,7 +122,7 @@ export const HomeAdmin = () => {
                             </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
+                </Grid> */}
             
             </Grid>
         </Fragment>
